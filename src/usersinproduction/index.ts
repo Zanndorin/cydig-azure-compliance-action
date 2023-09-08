@@ -7,7 +7,6 @@ export class UsersInProduction {
   static async getUsersInProduction(credentials: TokenCredential, subscriptionId: string): Promise<void> {
     // let disablePermissionWarning: string = tl.getVariable('disableWarningUsersInProd');
     let disablePermissionWarning: string = core.getInput('disableWarningUsersInProd');
-    console.log('disablePermissionWarning!!!!:', disablePermissionWarning); 
     if (!disablePermissionWarning) {
       disablePermissionWarning = 'false';
     }
