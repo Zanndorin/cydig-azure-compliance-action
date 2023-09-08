@@ -16,7 +16,7 @@ export class AllowedLocation {
       await PolicyService.managementGroupPolicyCheck(
         allowedLocationPolicyAssigments,
         subscriptionId,
-        policyInsightsClient,
+        policyInsightsClient
       )
     ) {
       console.log(`ALLOWED LOCATION POLICY IN PLACE: true`);
@@ -26,7 +26,7 @@ export class AllowedLocation {
       const isSubscriptionLevelPolicyCheckPassed: boolean = await PolicyService.subscriptionLevelPolicyCheck(
         allowedLocationPolicyAssigments,
         subscriptionId,
-        policyInsightsClient,
+        policyInsightsClient
       );
 
       console.log(`ALLOWED LOCATION POLICY IN PLACE: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);

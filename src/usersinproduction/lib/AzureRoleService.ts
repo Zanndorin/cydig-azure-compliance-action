@@ -73,12 +73,12 @@ export class AzureRoleService {
     // Filter the role definitions
     this.roleDefinitionsHighPriv = roleDefinitionsArray.filter(
       (roleDefinition: RoleDefinition) =>
-        roleDefinition.roleName.includes('Owner') || roleDefinition.roleName.includes('Admin'),
+        roleDefinition.roleName.includes('Owner') || roleDefinition.roleName.includes('Admin')
     );
 
     // Filter the role assignments based on filtered role definitions
     const highPrivRoleAssignments: RoleAssignment[] = this.roleAssignments.filter((roleAssignment: RoleAssignment) =>
-      this.filterArray(this.roleDefinitionsHighPriv, roleAssignment),
+      this.filterArray(this.roleDefinitionsHighPriv, roleAssignment)
     );
 
     return highPrivRoleAssignments;
@@ -110,12 +110,12 @@ export class AzureRoleService {
 
     // Filter the role definitions
     this.roleDefinitionsLowPriv = roleDefinitionsArray.filter((roleDefinition: RoleDefinition) =>
-      roleDefinition.roleName.includes('Reader'),
+      roleDefinition.roleName.includes('Reader')
     );
 
     // Filter the role assignments based on filtered role definitions
     const lowPrivRoleAssignments: RoleAssignment[] = this.roleAssignments.filter((roleAssignment: RoleAssignment) =>
-      this.filterArray(this.roleDefinitionsLowPriv, roleAssignment),
+      this.filterArray(this.roleDefinitionsLowPriv, roleAssignment)
     );
 
     return lowPrivRoleAssignments;
@@ -142,7 +142,7 @@ export class AzureRoleService {
         !(
           this.filterArray(this.roleDefinitionsLowPriv, roleAssignment) ||
           this.filterArray(this.roleDefinitionsHighPriv, roleAssignment)
-        ),
+        )
     );
 
     return mediumPrivRoleAssignments;
@@ -159,7 +159,7 @@ export class AzureRoleService {
           if (err.code === 'Authorization_RequestDenied') {
             this.insufficientPermission = true;
             console.log(
-              'Found a group and your pipeline does not have access to count the members. Will add 5 users to the count.',
+              'Found a group and your pipeline does not have access to count the members. Will add 5 users to the count.'
             );
             numberOfAssignments += 5;
           } else {
@@ -175,7 +175,7 @@ export class AzureRoleService {
 
   private filterArray(roleDefinitions: RoleDefinition[], roleAssignment: RoleAssignment): boolean {
     return roleDefinitions.some(
-      (roleDefinition: RoleDefinition) => roleDefinition.id == roleAssignment.roleDefinitionId,
+      (roleDefinition: RoleDefinition) => roleDefinition.id == roleAssignment.roleDefinitionId
     );
   }
 

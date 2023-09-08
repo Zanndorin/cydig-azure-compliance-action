@@ -28,17 +28,17 @@ export class PolicyService {
   static async managementGroupPolicyCheck(
     policyAssigment: PolicyAssignment[],
     subscriptionId: string,
-    policyInsightsClient: PolicyInsightsClient,
+    policyInsightsClient: PolicyInsightsClient
   ): Promise<boolean> {
     console.log('Checking if there is a policy on management group level');
     const managementGroupAllowedLocationPolicy: InfoPolicyType[] = this.getPolicyOnManagementGroupLevel(
       policyAssigment,
-      subscriptionId,
+      subscriptionId
     );
 
     console.log('Checking if the policy is enabled');
     const managementGroupAllowedLocationPolicyEnabled: InfoPolicyType[] = enabledPolicyFilter(
-      managementGroupAllowedLocationPolicy,
+      managementGroupAllowedLocationPolicy
     );
 
     if (managementGroupAllowedLocationPolicyEnabled.length > 0) {
@@ -61,17 +61,17 @@ export class PolicyService {
   static async subscriptionLevelPolicyCheck(
     policyAssigment: PolicyAssignment[],
     subscriptionId: string,
-    policyInsightsClient: PolicyInsightsClient,
+    policyInsightsClient: PolicyInsightsClient
   ): Promise<boolean> {
     console.log('\nChecking if there is a policy on subscription level');
     const subscriptionAllowedLocationPolicy: InfoPolicyType[] = this.getPolicyOnSubscriptionLevel(
       policyAssigment,
-      subscriptionId,
+      subscriptionId
     );
 
     console.log('Checking if the policy is enabled');
     const subscriptionAllowedLocationPolicyEnabled: InfoPolicyType[] = enabledPolicyFilter(
-      subscriptionAllowedLocationPolicy,
+      subscriptionAllowedLocationPolicy
     );
     if (subscriptionAllowedLocationPolicyEnabled.length > 0) {
       const locationsInPolicy: string[] = this.getLocationsInPolicy(subscriptionAllowedLocationPolicyEnabled);
@@ -82,7 +82,7 @@ export class PolicyService {
         const policyResult: SummarizeResults =
           await policyInsightsClient.policyStates.summarizeForSubscriptionLevelPolicyAssignment(
             subscriptionId,
-            subscriptionAllowedLocationPolicyEnabled[0].name,
+            subscriptionAllowedLocationPolicyEnabled[0].name
           );
 
         let numCompliantResources: number = 0;
@@ -91,27 +91,27 @@ export class PolicyService {
         if (
           policyResult.value[0].results.resourceDetails.length == 1 &&
           policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant',
+            (item: ComplianceDetail) => item.complianceState == 'compliant'
           )
         ) {
           numCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant',
+            (item: ComplianceDetail) => item.complianceState == 'compliant'
           ).count;
         } else if (
           policyResult.value[0].results.resourceDetails.length == 1 &&
           policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant',
+            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
           ).count
         ) {
           numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant',
+            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
           ).count;
         } else if (policyResult.value[0].results.resourceDetails.length > 1) {
           numCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant',
+            (item: ComplianceDetail) => item.complianceState == 'compliant'
           ).count;
           numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant',
+            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
           ).count;
         }
 
@@ -131,7 +131,7 @@ export class PolicyService {
 
   static getPolicyOnManagementGroupLevel(
     policyAssigment: PolicyAssignment[],
-    subscriptionId: string,
+    subscriptionId: string
   ): InfoPolicyType[] {
     const policies: InfoPolicyType[] = [];
     for (let i: number = 0; i < policyAssigment.length; i++) {
@@ -176,7 +176,7 @@ export class PolicyService {
 
   static async setNumberOfNonAndCompliantResources(
     policyInsightsClient: PolicyInsightsClient,
-    managementGroupAllowedLocationPolicy: InfoPolicyType[],
+    managementGroupAllowedLocationPolicy: InfoPolicyType[]
   ): Promise<void> {
     const listOfResourcesInSub: PagedAsyncIterableIterator<PolicyState, PolicyState[], PageSettings> =
       policyInsightsClient.policyStates.listQueryResultsForManagementGroup(
@@ -186,7 +186,7 @@ export class PolicyService {
           queryOptions: {
             filter: `policyDefinitionName eq 'e56962a6-4747-49cd-b67b-bf8b01975c4c'`,
           },
-        },
+        }
       );
     let resourceState: PolicyState = await listOfResourcesInSub.next();
 
@@ -195,7 +195,7 @@ export class PolicyService {
     while (!resourceState.done) {
       if (
         resourceState.value.resourceId.startsWith(
-          `/subscriptions/${managementGroupAllowedLocationPolicy[0].subscriptionId}`,
+          `/subscriptions/${managementGroupAllowedLocationPolicy[0].subscriptionId}`
         )
       ) {
         if (resourceState.value.isCompliant) {
