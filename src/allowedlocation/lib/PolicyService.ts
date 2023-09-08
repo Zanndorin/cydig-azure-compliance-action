@@ -13,7 +13,6 @@ export class PolicyService {
     const allPolicyAssigments: PagedAsyncIterableIterator<PolicyAssignment, PolicyAssignment[], PageSettings> =
       await client.policyAssignments.list();
 
-    // eslint-disable-next-line
     let policyAssigment: IteratorResult<PolicyAssignment, any> = await allPolicyAssigments.next();
 
     while (!policyAssigment.done) {
@@ -26,9 +25,6 @@ export class PolicyService {
     return allowedLocationPolicyAssigments;
   }
 
-  //Hur göra om det är fler policies:
-  //1. Söka på policiyDefinition name --> vad händer med de som är disable (om det finns såna som innehåller locations som inte får vara med)?
-  //2. Sub kan inte vara i fler management groups va?
   static async managementGroupPolicyCheck(
     policyAssigment: PolicyAssignment[],
     subscriptionId: string,
@@ -49,7 +45,6 @@ export class PolicyService {
       const locationsInPolicy: string[] = this.getLocationsInPolicy(managementGroupAllowedLocationPolicyEnabled);
 
       if (locationsInPolicy.length > 0) {
-        //Don't know if a policy can be without locations?
         console.log('Checking if the policy only contains allowed locations');
 
         if (isLocationAllowed(locationsInPolicy)) {
@@ -83,7 +78,6 @@ export class PolicyService {
 
       console.log('Checking if the policy only contains allowed locations');
       if (isLocationAllowed(locationsInPolicy)) {
-        //Kollar bara första - loop fall fler
         console.log('Getting number of complaint and non compliant resources');
         const policyResult: SummarizeResults =
           await policyInsightsClient.policyStates.summarizeForSubscriptionLevelPolicyAssignment(
