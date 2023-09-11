@@ -14,13 +14,10 @@ jobs:
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci
-        working-directory: $(System.DefaultWorkingDirectory)/uploadcompliancestatetask
       - name: Compile to Javascript
         run: npm run build
-        working-directory: $(System.DefaultWorkingDirectory)/uploadcompliancestatetask
       - name: Run tests
         run: npm run testScript
-        working-directory: $(System.DefaultWorkingDirectory)/uploadcompliancestatetask
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
@@ -30,6 +27,6 @@ jobs:
       - name: 'Run Azure CLI commands'
         run: az account show
       - name: 'Run Azure Compliance Controls'
-        uses: ./uploadcompliancestatetask
+        uses: ./
         with:
           subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
