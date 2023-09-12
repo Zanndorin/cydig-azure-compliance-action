@@ -36,9 +36,9 @@ export class UsersInProduction {
     console.log(`\nNumber of low privileged users in Azure: ${numberOfLowPrivRoleAssignments} `);
     await azureRoleService.printRoles(lowPrivRoleAssignments);
 
-    core.setOutput('numUserInProdSeverity1', numberOfLowPrivRoleAssignments.toString());
-    core.setOutput('numUserInProdSeverity2', numberOfMediumPrivRoleAssignments.toString());
-    core.setOutput('numUserInProdSeverity3', numberOfHighPrivRoleAssignments.toString());
+    core.exportVariable('numUserInProdSeverity1', numberOfLowPrivRoleAssignments.toString());
+    core.exportVariable('numUserInProdSeverity2', numberOfMediumPrivRoleAssignments.toString());
+    core.exportVariable('numUserInProdSeverity3', numberOfHighPrivRoleAssignments.toString());
 
     // Refactor the logs to be adjusted to github actions instead of azure devops tasks service connection
     if (azureRoleService.insufficientPermission && disablePermissionWarning && !JSON.parse(disablePermissionWarning)) {

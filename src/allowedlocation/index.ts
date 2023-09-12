@@ -20,8 +20,6 @@ export class AllowedLocation {
       )
     ) {
       console.log(`ALLOWED LOCATION POLICY IN PLACE: true`);
-      core.setOutput('allowedLocationPolicy', 'true');
-      console.log("core.setOutput('allowedLocationPolicy')"+core.getInput('allowedLocationPolicy'));
       core.exportVariable('allowedLocationPolicy', 'true');
       console.log("core.exportVariable('allowedLocationPolicy')"+ core.getInput('allowedLocationPolicy'));
       return;
@@ -33,8 +31,6 @@ export class AllowedLocation {
       );
 
       console.log(`ALLOWED LOCATION POLICY IN PLACE: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
-      //core.setOutput('allowedLocationPolicy', isSubscriptionLevelPolicyCheckPassed.toString());
-      core.setOutput('allowedLocationPolicy', 'true');
       console.log("core.getInput('allowedLocationPolicy')"+ core.getInput('allowedLocationPolicy'));
 
       core.exportVariable('allowedLocationPolicy', 'true');

@@ -118,8 +118,8 @@ export class PolicyService {
         console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources.toString()}`);
         console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${numNonCompliantResources.toString()}`);
 
-        core.setOutput('compliantResources', numCompliantResources.toString());
-        core.setOutput('nonCompliantResources', numNonCompliantResources.toString());
+        core.exportVariable('compliantResources', numCompliantResources.toString());
+        core.exportVariable('nonCompliantResources', numNonCompliantResources.toString());
         return true;
       } else {
         return false;
@@ -208,8 +208,8 @@ export class PolicyService {
 
     console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources.toString()}`);
     console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${(totalNumResources - numCompliantResources).toString()}`);
-    core.setOutput('compliantResources', numCompliantResources.toString());
-    core.setOutput('nonCompliantResources', (totalNumResources - numCompliantResources).toString());
+    core.exportVariable('compliantResources', numCompliantResources.toString());
+    core.exportVariable('nonCompliantResources', (totalNumResources - numCompliantResources).toString());
     return;
   }
 }
