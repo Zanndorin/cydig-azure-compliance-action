@@ -30,3 +30,5 @@ jobs:
         uses: ./
         with:
           subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: run command
+        run: 'echo ${{ inputs.value }}'
