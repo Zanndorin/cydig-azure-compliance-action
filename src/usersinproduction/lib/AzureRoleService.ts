@@ -33,6 +33,7 @@ export class AzureRoleService {
   }
   public async setRoleAssignmentForSubscription(): Promise<void> {
     // Convert the iterator to an array
+    // eslint-disable-next-line @typescript-eslint/typedef
     const roleAssignmentsArray = [];
     for await (const roleAssignment of this.authManagementClient.roleAssignments.listForScope(this.scope)) {
       roleAssignmentsArray.push(roleAssignment);

@@ -21,6 +21,7 @@ export class AllowedLocation {
     ) {
       console.log(`ALLOWED LOCATION POLICY IN PLACE: true`);
       core.setOutput('allowedLocationPolicy', 'true');
+      console.log("core.getInput('allowedLocationPolicy')"+core.getInput('allowedLocationPolicy'));
       return;
     } else {
       const isSubscriptionLevelPolicyCheckPassed: boolean = await PolicyService.subscriptionLevelPolicyCheck(
@@ -31,6 +32,7 @@ export class AllowedLocation {
 
       console.log(`ALLOWED LOCATION POLICY IN PLACE: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
       core.setOutput('allowedLocationPolicy', isSubscriptionLevelPolicyCheckPassed.toString());
+      console.log("core.getInput('allowedLocationPolicy')"+core.getInput('allowedLocationPolicy'));
       return;
     }
   }

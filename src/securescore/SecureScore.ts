@@ -5,6 +5,7 @@ export class SecureScore {
   static async getSecureScore(credentials: DefaultAzureCredential, subscriptionId: string): Promise<void> {
     const client: SecurityCenter = new SecurityCenter(credentials, subscriptionId);
     console.log('Getting Azure Secure Score');
+    // eslint-disable-next-line @typescript-eslint/typedef
     const secureScoreObject = await client.secureScores.get('ascScore');
     if (secureScoreObject?.['percentage']) {
       const secureScorePercent: number = Math.round(secureScoreObject?.['percentage'] * 100);
