@@ -101,3 +101,8 @@ __tests__/runner/*
 .idea
 .vscode
 *.code-workspace
+
+# Others
+node_modules
+dist
+ResultsFile.xml
