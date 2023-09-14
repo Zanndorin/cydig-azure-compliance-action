@@ -23,15 +23,15 @@ jobs:
       - name: Check for code changes
         run: | 
           git fetch
-          if [[ -n $(git status --porcelain | grep dist) ]]; then
-            echo "No code changes detected. Skipping commit and push."
-            exit 0
-          else
+          if [[ -n $(git status --porcelain dist) ]]; then
             echo "Code changes detected. Proceeding with commit and push."
             git add dist
             git config --global user.name ${{ github.actor }}
             git commit -m "Automated Build"
             git push
+            exit 0
+          else
+            echo "No code changes detected for dist folder. Skipping commit and push."
           fi
 
 
