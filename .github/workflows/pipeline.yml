@@ -20,7 +20,7 @@ jobs:
         run: npm run testScript
       - name: Build Action
         run: npm run build
-      - name: Check for code changes
+      - name: Check for code changes in dist folder
         run: | 
           git fetch --quiet
           if [[ -n $(git status --porcelain dist) ]]; then
