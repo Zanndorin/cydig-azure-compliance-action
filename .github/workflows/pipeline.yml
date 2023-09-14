@@ -23,7 +23,7 @@ jobs:
       - name: Check for code changes
         run: | 
           git fetch
-          if [[ -n $(git status --porcelain) ]]; then
+          if [[ -n $(git status --porcelain | grep dist) ]]; then
             echo "No code changes detected. Skipping commit and push."
             exit 0
           else
