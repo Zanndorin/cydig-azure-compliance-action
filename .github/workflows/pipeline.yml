@@ -33,6 +33,10 @@ jobs:
             git commit -m "Automated Build"
             git push
           fi
+
+
+      # - name: Commit and push build to repo
+      #   run: |
           
       # - name: 'Az CLI login'
       #   uses: azure/login@v1
