@@ -13,6 +13,23 @@ import { UsersInProduction } from './usersinproduction';
 export async function run(): Promise<void> {
   try {
     const credentials: DefaultAzureCredential = new DefaultAzureCredential();
+        const octokit = github.getOctokit('github.token');
+    const owner = github.context.repo.owner;
+    const repo = github.context.repo.repo;
+    await octokit.request(`POST /repos/${owner}/${repo}/releases`, {
+      owner: owner,
+      repo: repo,
+      tag_name: 'v1.0.0',
+      target_commitish: 'master',
+      name: 'v1.0.0',
+      body: 'Description of the release',
+      draft: false,
+      prerelease: false,
+      generate_release_notes: false,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    });
     const subscriptionId: string = core.getInput('subscription');
     await SecureScore.getSecureScore(credentials, subscriptionId);
     await DeployedVirtualMachines.getDeployedVirtualMachines(credentials, subscriptionId);
