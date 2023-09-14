@@ -104,5 +104,5 @@ __tests__/runner/*
 
 # Others
 node_modules
-dist
+# dist
 ResultsFile.xml
