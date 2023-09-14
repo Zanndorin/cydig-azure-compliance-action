@@ -1,4 +1,4 @@
-name: Build and Authenticate
+name: Test and Build
 run-name: ${{ github.actor }} is testing out github actions
 permissions:
   contents: write
