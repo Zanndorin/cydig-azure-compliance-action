@@ -22,14 +22,13 @@ jobs:
         run: npm run build
       - name: Check for code changes
         run: | 
-          git fetch
+          git fetch --quiet
           if [[ -n $(git status --porcelain dist) ]]; then
             echo "Code changes detected. Proceeding with commit and push."
             git add dist
             git config --global user.name ${{ github.actor }}
             git commit -m "Automated Build"
             git push
-            exit 0
           else
             echo "No code changes detected for dist folder. Skipping commit and push."
           fi

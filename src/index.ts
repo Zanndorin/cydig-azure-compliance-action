@@ -19,7 +19,6 @@ export async function run(): Promise<void> {
     await AllowedLocation.getAllowedLocation(credentials, subscriptionId);
     await UsersInProduction.getUsersInProduction(credentials, subscriptionId);
   } catch (error) {
-    // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message);
   }
 }
