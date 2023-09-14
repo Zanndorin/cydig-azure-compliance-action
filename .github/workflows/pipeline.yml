@@ -20,6 +20,12 @@ jobs:
         run: npm run testScript
       - name: Build Action
         run: npm run build
+      - name: Commit and push build to repo
+        run: |
+          git add dist
+          git config --global user.name ${{ github.actor }}
+          git commit -m "Automated Build"
+          git push
       # - name: 'Az CLI login'
       #   uses: azure/login@v1
       #   with:
