@@ -1,5 +1,4 @@
 import * as core from '@actions/core';
-import { SecurityCenter } from '@azure/arm-security';
 import { DefaultAzureCredential } from '@azure/identity';
 import { SecureScore } from './securescore/SecureScore';
 import { DeployedVirtualMachines } from './deployedvirtualmachines/DeployedVirtualMachines';
