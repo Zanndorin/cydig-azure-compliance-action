@@ -31,7 +31,10 @@ jobs:
           else
             echo "No code changes detected for dist folder. Skipping commit and push."
           fi
-
+          
+      - uses: JasonEtco/build-and-tag-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       # - name: Commit and push build to repo
       #   run: |
