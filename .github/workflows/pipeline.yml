@@ -26,6 +26,7 @@ jobs:
           if [[ -n $(git status --porcelain dist) ]]; then
             echo "Code changes detected. Proceeding with commit and push."
             git add dist
+            git config --global user.name ${{ github.actor }}
             git commit -m "Automated Build"
             git push
           else
