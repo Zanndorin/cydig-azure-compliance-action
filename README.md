@@ -35,7 +35,7 @@ npm run format:write
 npm run build
 ```
 
-5. To run the tests, run the following command:   ```bash npm run test ```  To generated test results in a XML-file, run the following command:  ```bash npm run testScript ```  If you don't have at least 1 test in the ```test``` folder, the workflow won't work. 
+5. To run the tests, run the following command:   ```bash npm run test ```  To generated test results in a XML-file, run the following command:  ```bash npm run testScript ```  If you don't have at least 1 test in the ```test``` folder, the workflow won't work.
 
 6. If necessary, add input parameter in ```action.yml```, if it is needed for the control.
 7. When pushing the code the repository the workflow will build and push your code to the repository.
