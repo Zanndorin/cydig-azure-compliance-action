@@ -21,8 +21,10 @@
   "engines": {
     "node": ">=16"
   },
+  "main": "dist/index.js",
   "scripts": {
-    "build": "cd src && tsc",
+    "build": "npx @vercel/ncc build && npx convert-action",
+    "buildOne": "cd src && tsc",
     "test": "npm run build && mocha dist/test/",
     "testScript": "npm run build && mocha dist/test/ --reporter xunit --reporter-option output=ResultsFile.xml",
     "prepare": "husky install",
