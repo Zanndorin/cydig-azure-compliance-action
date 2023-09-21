@@ -16,33 +16,50 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.head }}"
           echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
-      
-      - name: GitHub Tag Name example
+      - name: Increment Version
+        id: increment_version
         run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-      - name: Set output
-        id: vars
-        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
-      - name : Get tag 
-        run: |
-         echo $RELEASE_VERSION
-         echo ${{ steps.vars.outputs.tag }}
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.previoustag.outputs.tag }}
+            current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
+            IFS='.' read -r major minor patch <<< "${current_version#v}"
   
-      - name: 'Get Label'
+            incremented_major=$((major + 1))
+            incremented_minor=$((minor + 1))
+            incremented_patch=$((patch + 1))
+  
+            incremented_major_version="v${incremented_major}.${minor}.${patch}"
+            incremented_minor_version="v${major}.${incremented_minor}.${patch}"
+            incremented_patch_version="v${major}.${minor}.${incremented_patch}"
+  
+            echo "::set-output name=incremented_major_version::${incremented_major_version}"
+            echo "::set-output name=incremented_minor_version::${incremented_minor_version}"
+            echo "::set-output name=incremented_patch_version::${incremented_patch_version}"
+  
+      - name: Use Incremented Versions
         run: |
-          echo "Label: ${{ steps.semvers.outputs.patch }}"
+            echo "Incremented Major Version: ${{ steps.increment_version.outputs.incremented_major_version }}"
+            echo "Incremented Minor Version: ${{ steps.increment_version.outputs.incremented_minor_version }}"
+            echo "Incremented Patch Version: ${{ steps.increment_version.outputs.incremented_patch_version }}"
+  
+  
+    #   - name : Get tag 
+    #     run: |
+    #      echo $RELEASE_VERSION
+    #      echo ${{ steps.vars.outputs.tag }}
+    #   - uses: actions/checkout@v3
+    #     with:
+    #       fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+    #   - name: 'Get Previous tag'
+    #     id: previoustag
+    #     uses: "WyriHaximus/github-action-get-previous-tag@v1"
+    #   - name: 'Get next minor version'
+    #     id: semvers
+    #     uses: "WyriHaximus/github-action-next-semvers@v1"
+    #     with:
+    #       version: ${{ steps.previoustag.outputs.tag }}
+  
+    #   - name: 'Get Label'
+    #     run: |
+    #       echo "Label: ${{ steps.semvers.outputs.patch }}"
 
     #   - name: 'Create new milestone'
     #     id: createmilestone
