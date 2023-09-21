@@ -26,13 +26,13 @@ jobs:
             incremented_minor=$((minor + 1))
             incremented_patch=$((patch + 1))
   
-            incremented_major_version="v${incremented_major}.${minor}.${patch}"
-            incremented_minor_version="v${major}.${incremented_minor}.${patch}"
-            incremented_patch_version="v${major}.${minor}.${incremented_patch}"
+            major_version="v${incremented_major}.${minor}.${patch}"
+            minor_version="v${major}.${incremented_minor}.${patch}"
+            patch_version="v${major}.${minor}.${incremented_patch}"
   
-            echo "::set-output name=incremented_major_version::${incremented_major_version}"
-            echo "::set-output name=incremented_minor_version::${incremented_minor_version}"
-            echo "::set-output name=incremented_patch_version::${incremented_patch_version}"
+            echo "major_version=${incremented_major_version}" >> $GITHUB_OUTPUT
+            echo "minor_version=${incremented_minor_version}" >> $GITHUB_OUTPUT
+            echo "patch_version=${incremented_patch_version}" >> $GITHUB_OUTPUT
   
       - name: Use Incremented Versions
         run: |
