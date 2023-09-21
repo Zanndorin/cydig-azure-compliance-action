@@ -29,7 +29,10 @@ jobs:
             major_version="v${incremented_major}.${minor}.${patch}"
             minor_version="v${major}.${incremented_minor}.${patch}"
             patch_version="v${major}.${minor}.${incremented_patch}"
-  
+
+            echo "${major_version}"
+            echo "${minor_version}"
+            echo "${patch_version}"
             echo "major_version=${incremented_major_version}" >> $GITHUB_OUTPUT
             echo "minor_version=${incremented_minor_version}" >> $GITHUB_OUTPUT
             echo "patch_version=${incremented_patch_version}" >> $GITHUB_OUTPUT
