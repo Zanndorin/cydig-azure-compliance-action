@@ -9,6 +9,14 @@ jobs:
   Label:
     runs-on: ubuntu-latest
     steps:
+      - name: PR commit message
+        run : |
+          echo "PR commit message: ${{ github.event.pull_request.title }}"
+          echo "PR commit message: ${{ github.event.pull_request.body }}"
+          echo "PR commit message: ${{ github.event.pull_request.head }}"
+          echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
+          echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
+          echo "PR commit message ${{ github.event.head_commit.message }}      
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
