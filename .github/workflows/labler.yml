@@ -21,11 +21,9 @@ jobs:
         run: |
             current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
             IFS='.' read -r major minor patch <<< "${current_version#v}"
-  
             incremented_major=$((major + 1))
             incremented_minor=$((minor + 1))
             incremented_patch=$((patch + 1))
-
             echo "${major}.${minor}.${patch}"
             echo "${major}"
             echo "${minor}"
@@ -33,7 +31,6 @@ jobs:
             major_version="v${incremented_major}.${minor}.${patch}"
             minor_version="v${major}.${incremented_minor}.${patch}"
             patch_version="v${major}.${minor}.${incremented_patch}"
-
             echo "${major_version}"
             echo "${minor_version}"
             echo "${patch_version}"
