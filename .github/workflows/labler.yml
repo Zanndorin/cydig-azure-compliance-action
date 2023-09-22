@@ -20,12 +20,12 @@ jobs:
       - id: bump
         uses: zwaldowski/match-label-action@v4
         with:
-          allowed: major,minor,patch, none
+          allowed: major,minor,patch,none
           default_match: none
       - uses: zwaldowski/semver-release-action@v3
         id: release
         with:
-          bump: ${{ steps.bump.outputs.match }}
+          bump: ${{ steps.bump.outputs.match || 'none' }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the created latest release time
