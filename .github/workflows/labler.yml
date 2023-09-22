@@ -26,8 +26,6 @@ jobs:
           # Run the command and capture the output
           release_output=$(gh release list --limit 1)
           echo "Release Output: $release_output"
-
-          # Extract the latest release version
           current_version=$(echo "$release_output" | grep Latest | awk '{ print $1;}')
           echo "version=${current_version}" >> $GITHUB_ENV
         env:
