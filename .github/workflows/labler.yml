@@ -19,14 +19,12 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: "Get latest release"
+      - name: "Get latest release tag"
         id: latest_release
-        shell: bash
         run: |
           # Run the command and capture the output
           current_version=`gh release list --limit 1 | grep Latest | awk '{ print $1;}'`
-          current=${current_version}
-          echo "version=$current" >> $GITHUB_ENV
+          echo "version=${current_version}" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -48,10 +46,8 @@ jobs:
           current_version:  ${{ env.version }}
           level: ${{steps.label.outputs.match}}
 
-    
-
       - name: Get the created latest release time
-        run: echo "v${{ steps.bump-semver.outputs.new_version }}."
+        run: echo "${{ steps.bump-semver.outputs.new_version }}."
 
       # - name: "increment"
       #   shell: bassh
