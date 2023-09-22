@@ -28,7 +28,9 @@ jobs:
           # Extract the latest release version
           current_version=$(echo "$release_output" | grep Latest | awk '{ print $1;}')
           echo "version=${current_version}" >> $GITHUB_ENV
-
+        env:
+          GH_TOKEN: ${{ github.token }}
+          
       - run: |
           echo ${{ steps.latest_release.outputs.version}}
       
