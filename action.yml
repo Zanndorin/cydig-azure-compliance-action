@@ -1,14 +1,11 @@
-name: 'cydig/azurecompliancetask@v1'
-description: 'Cydig azure tasks'
-author: 'Omegapoint'
-
-# Define your inputs here.
+name: cydig/azurecompliancetask@v1
+description: Cydig azure tasks
+author: Omegapoint
 inputs:
   subscription:
-    description: 'Cydig azure tasks.'
+    description: Cydig azure tasks.
     required: true
-    default: 'Not working'
-
+    default: Not working
 runs:
   using: node16
   main: dist/index.js
