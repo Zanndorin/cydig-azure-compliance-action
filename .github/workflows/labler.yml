@@ -21,17 +21,22 @@ jobs:
       - name: "Get latest release"
         id: latest_release
         run: |
-            current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
-            echo "version=${current_version}" >> $GITHUB_OUTPUT
+          # Run the command and capture the output
+          release_output=$(gh release list --limit 1)
+          echo "Release Output: $release_output"
+
+          # Extract the latest release version
+          current_version=$(echo "$release_output" | grep Latest | awk '{ print $1;}')
+          echo "version=${current_version}" >> $GITHUB_ENV
+
+      - run: |
+          echo ${{ steps.latest_release.outputs.version}}
       
       - id: label
         uses: zwaldowski/match-label-action@v4
         with:
           allowed: major,minor,patch
           default_match: none
-
-      - run: |
-          echo ${{ steps.latest_release.outputs.version}}
 
       - uses: actions-ecosystem/action-bump-semver@v1
         if: ${{ steps.label.outputs.match != 'none' }}
