@@ -22,9 +22,13 @@ jobs:
         with:
           allowed: major,minor,patch
       - uses: zwaldowski/semver-release-action@v3
+        id: release
         with:
           bump: ${{ steps.bump.outputs.match }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get the created latest release time
+        run: echo "The time was ${{ steps.release.outputs.version }}."
 
       # - name: "increment"
       #   shell: bassh
