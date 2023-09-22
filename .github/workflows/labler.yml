@@ -24,11 +24,10 @@ jobs:
         shell: bash
         run: |
           # Run the command and capture the output
-          release_output=$(gh release list --limit 1)
-          current_version=$(echo "$release_output" | grep Latest | awk '{ print $1;}')
+          current_version=`gh release list --limit 1 | grep Latest | awk '{ print $1;}'`
           current=${current_version}
           echo "version=$current" >> $GITHUB_ENV
-          echo "$current"
+          echo "$current dsadsa"
         env:
           GH_TOKEN: ${{ github.token }}
 
