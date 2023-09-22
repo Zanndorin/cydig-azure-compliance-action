@@ -27,6 +27,9 @@ jobs:
             incremented_patch=$((patch + 1))
 
             echo "${major}.${minor}.${patch}"
+            echo "${major}"
+            echo "${minor}"
+            echo "${patch}"
             major_version="v${incremented_major}.${minor}.${patch}"
             minor_version="v${major}.${incremented_minor}.${patch}"
             patch_version="v${major}.${minor}.${incremented_patch}"
