@@ -1,12 +1,12 @@
 # ##
-# # Publish new action tag(s) for downstream consumption
+# Publish new action tag(s) for downstream consumption
 # ##
 # name: Publish
 
 # # Manual or automatic release
-# on:
-#   release:
-#     types: [published, edited]
+# # on:
+# #   release:
+# #     types: [published, edited]
 
 # jobs:
 #   publish:
