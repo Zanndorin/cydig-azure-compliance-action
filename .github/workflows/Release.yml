@@ -1,0 +1,118 @@
+name: Creating release
+
+on: 
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  release:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR commit message
+        run : |
+          echo "PR commit message: ${{ github.event.pull_request.title }}"
+          echo "PR commit message: ${{ github.event.pull_request.body }}"
+          echo "PR commit message: ${{ github.event.pull_request.head }}"
+          echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
+          echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: "Get latest release tag"
+        id: latest_release
+        run: |
+          current_version=`gh release list --limit 30 | grep Latest | awk '{ print $1;}'`
+          echo "version=${current_version}" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Display version
+        run: |
+          # Display the version from the environment
+          echo "Latest Version: ${{ env.version }}"
+      
+      - id: label
+        uses: zwaldowski/match-label-action@v4
+        with:
+          allowed: major,minor,patch
+          default_match: none
+
+      - uses: actions-ecosystem/action-bump-semver@v1
+        if: ${{ steps.label.outputs.match != 'none' }}
+        id: bump-semver
+        with:
+          current_version:  ${{ env.version }}
+          level: ${{steps.label.outputs.match}}
+
+      - name: Get the created latest release time
+        run: echo "${{ steps.bump-semver.outputs.new_version }}"
+
+      - name: "Creating Release"
+        run: |
+          gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: JasonEtco/build-and-tag-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
+      
+        # - name: "increment"
+      #   shell: bassh
+      #   id: increment_version
+      #   run: |
+      #       current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
+      #       IFS='.' read -r major minor patch <<< "${current_version#v}"
+      #       incremented_major=$((major + 1))
+      #       incremented_minor=$((minor + 1))
+      #       incremented_patch=$((patch + 1))
+      #       echo "${incremented_major}.${incremented_minor}.${incremented_patch}"
+      #       echo "${incremented_major}"
+      #       echo "${incremented_minor}"
+      #       echo "${incremented_patch}"
+      #       major_version="v${incremented_major}.${minor}.${patch}"
+      #       minor_version="v${major}.${incremented_minor}.${patch}"
+      #       patch_version="v${major}.${minor}.${incremented_patch}"
+      #       # echo "major_version=${major_version}" >> $GITHUB_OUTPUT
+      #       # echo "minor_version=${minor_version}" >> $GITHUB_OUTPUT
+      #       # echo "patch_version=${patch_version}" >> $GITHUB_OUTPUT
+      #   env:
+      #     GH_TOKEN: ${{ github.token }}
+      # - name: Use Incremented Versions
+      #   run: |
+      #       echo "Incremented Major Version: ${{ steps.increment_version.outputs.incremented_major_version }}"
+      #       echo "Incremented Minor Version: ${{ steps.increment_version.outputs.incremented_minor_version }}"
+      #       echo "Incremented Patch Version: ${{ steps.increment_version.outputs.incremented_patch_version }}"
+  
+  
+    #   - name : Get tag 
+    #     run: |
+    #      echo $RELEASE_VERSION
+    #      echo ${{ steps.vars.outputs.tag }}
+    #   - uses: actions/checkout@v3
+    #     with:
+    #       fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+    #   - name: 'Get Previous tag'
+    #     id: previoustag
+    #     uses: "WyriHaximus/github-action-get-previous-tag@v1"
+    #   - name: 'Get next minor version'
+    #     id: semvers
+    #     uses: "WyriHaximus/github-action-next-semvers@v1"
+    #     with:
+    #       version: ${{ steps.previoustag.outputs.tag }}
+  
+    #   - name: 'Get Label'
+    #     run: |
+    #       echo "Label: ${{ steps.semvers.outputs.patch }}"
+
+    #   - name: 'Create new milestone'
+    #     id: createmilestone
+    #     uses: "WyriHaximus/github-action-create-milestone@v1"
+    #     with:
+    #       title: ${{ steps.semvers.outputs.patch }}
+    #     env:
+    #       GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    #
