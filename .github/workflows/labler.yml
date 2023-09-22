@@ -35,8 +35,7 @@ jobs:
             # echo "major_version=${major_version}" >> $GITHUB_OUTPUT
             # echo "minor_version=${minor_version}" >> $GITHUB_OUTPUT
             # echo "patch_version=${patch_version}" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ github.token }}
+
       - name: Use Incremented Versions
         run: |
             echo "Incremented Major Version: ${{ steps.increment_version.outputs.incremented_major_version }}"
