@@ -23,20 +23,28 @@ jobs:
         id: vars
         with: 
           semver_only: true
+          
       - name: Get the created latest release time
         run: echo "v${{ steps.vars.outputs.tag }}.
       
-      - id: bump
+      - id: label
         uses: zwaldowski/match-label-action@v4
         with:
           allowed: major,minor,patch
           default_match: none
-        
+
+      - uses: actions-ecosystem/action-bump-semver@v1
+        if: ${{ steps.label.outputs.match != 'none' }}
+        id: bump-semver
+        with:
+          current_version: ${{ steps.vars.outputs.tag }}
+          level: ${{steps.label.outputs.match}}
+
       - uses: zwaldowski/semver-release-action@v3
-        if: ${{ steps.bump.outputs.match != 'none' }}
+        if: ${{ steps.label.outputs.match != 'none' }}
         id: release
         with:
-          bump: ${{ steps.bump.outputs.match }}
+          bump: ${{ steps.label.outputs.match }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get the created latest release time
