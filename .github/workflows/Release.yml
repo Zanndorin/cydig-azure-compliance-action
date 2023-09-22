@@ -1,12 +1,12 @@
-name: Get Label on PR
+name: Creating release
 
 on: 
-    pull_request:
-        types: [opened, synchronize, reopened, labeled, unlabeled]
-
+  pull_request_review:
+    types: [submitted]
 
 jobs:
-  Label:
+  release:
+    if: github.event.review.state == 'approved'
     runs-on: ubuntu-latest
     steps:
       - name: PR commit message
