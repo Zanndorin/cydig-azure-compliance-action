@@ -9,17 +9,8 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: PR commit message
-        run : |
-          echo "PR commit message: ${{ github.event.pull_request.title }}"
-          echo "PR commit message: ${{ github.event.pull_request.body }}"
-          echo "PR commit message: ${{ github.event.pull_request.head }}"
-          echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
-          echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
-
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: "Get latest release tag"
         id: latest_release
         run: |
@@ -60,15 +51,12 @@ jobs:
           major)
           echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
             ;;
-        
           minor)
           echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
             ;;
-        
           patch)
           echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
             ;;
-        
           *)
           echo "new_version=none" >> $GITHUB_ENV
             ;;
