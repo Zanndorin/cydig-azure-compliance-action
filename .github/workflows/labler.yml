@@ -27,12 +27,13 @@ jobs:
           current_version=`gh release list --limit 1 | grep Latest | awk '{ print $1;}'`
           current=${current_version}
           echo "version=$current" >> $GITHUB_ENV
-          echo "$current dsadsa"
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - run: |
-          echo ${{ steps.latest_release.outputs.version}}
+      - name: Display version
+        run: |
+          # Display the version from the environment
+          echo "Latest Version: ${{ env.version }}"
       
       - id: label
         uses: zwaldowski/match-label-action@v4
