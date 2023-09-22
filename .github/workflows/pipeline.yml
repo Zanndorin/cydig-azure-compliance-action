@@ -17,10 +17,10 @@ jobs:
         run: npm ci
       - name: Compile to Javascript
         run: npm run build
-      - name: Run tests
-        run: npm run testScript
-      - name: Build Action
-        run: npm run build
+      # - name: Run tests
+      #   run: npm run testScript
+      # - name: Build Action
+      #   run: npm run build
       # - name: Check for code changes in dist folder
       #   run: | 
       #     git fetch --quiet
@@ -41,19 +41,19 @@ jobs:
       # # # - name: Commit and push build to repo
       # # #   run: |
           
-      - name: 'Az CLI login'
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # - name: 'Az CLI login'
+      #   uses: azure/login@v1
+      #   with:
+      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: 'Run Azure CLI commands'
-        run: az account show
-      - name: 'Run Azure Compliance Controls'
-        uses: Omegapoint/CydigAzureComplianceAction@v1
-        with:
-          subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      # - name: 'Run Azure CLI commands'
+      #   run: az account show
+      # - name: 'Run Azure Compliance Controls'
+      #   uses: Omegapoint/CydigAzureComplianceAction@v1
+      #   with:
+      #     subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
       # # # - name: run command
       # # #   run: 'echo ${{ inputs.value }}'

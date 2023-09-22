@@ -1,12 +1,12 @@
 name: Creating release
 
 on: 
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [closed]
 
 jobs:
   release:
-    if: github.event.review.state == 'approved'
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: PR commit message
@@ -115,4 +115,4 @@ jobs:
     #       title: ${{ steps.semvers.outputs.patch }}
     #     env:
     #       GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-    #
+    #%%
