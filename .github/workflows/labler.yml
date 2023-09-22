@@ -17,7 +17,6 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
       - name: "increment"
-        shell: bash
         id: increment_version
         run: |
             current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
@@ -35,7 +34,8 @@ jobs:
             # echo "major_version=${major_version}" >> $GITHUB_OUTPUT
             # echo "minor_version=${minor_version}" >> $GITHUB_OUTPUT
             # echo "patch_version=${patch_version}" >> $GITHUB_OUTPUT
-
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Use Incremented Versions
         run: |
             echo "Incremented Major Version: ${{ steps.increment_version.outputs.incremented_major_version }}"
