@@ -44,6 +44,22 @@ jobs:
           current_version:  ${{ env.version }}
           level: ${{steps.label.outputs.match}}
 
+      - name: "Creating Release"
+        if: ${{ steps.label.outputs.match != 'none' }}
+        run: |
+          gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: JasonEtco/build-and-tag-action@v2
+        if: ${{ steps.label.outputs.match != 'none' }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
+      
+
+
+          
       # - name: "Get latest release tag"
       #   run: |
       #     IFS='.' read -r major minor patch <<< "${{ env.version }}"
@@ -65,19 +81,12 @@ jobs:
       # - name: Get the created latest release time
       #   run: echo "${{ env.new_version }}"
 
-      - name: "Creating Release"
-        if: ${{ steps.label.outputs.match != 'none' }}
-        run: |
-          gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}
-      - uses: JasonEtco/build-and-tag-action@v2
-        if: ${{ steps.label.outputs.match != 'none' }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ steps.bump-semver.outputs.new_version }}
-      
+
+
+
+
+
+
         # - name: "increment"
       #   shell: bassh
       #   id: increment_version
