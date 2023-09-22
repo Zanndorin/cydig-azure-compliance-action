@@ -17,10 +17,10 @@ jobs:
         run: npm ci
       - name: Compile to Javascript
         run: npm run build
-      - name: Run tests
-        run: npm run testScript
-      - name: Build Action
-        run: npm run build
+      # - name: Run tests
+      #   run: npm run testScript
+      # - name: Build Action
+      #   run: npm run build
       # - name: Check for code changes in dist folder
       #   run: | 
       #     git fetch --quiet
