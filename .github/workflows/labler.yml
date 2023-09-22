@@ -48,15 +48,10 @@ jobs:
           current_version:  ${{ env.version }}
           level: ${{steps.label.outputs.match}}
 
-      - uses: zwaldowski/semver-release-action@v3
-        if: ${{ steps.label.outputs.match != 'none' }}
-        id: release
-        with:
-          bump: ${{ steps.label.outputs.match }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+    
 
       - name: Get the created latest release time
-        run: echo "v${{ steps.release.outputs.version }}."
+        run: echo "v${{ steps.label.outputs.match }}."
 
       # - name: "increment"
       #   shell: bassh
