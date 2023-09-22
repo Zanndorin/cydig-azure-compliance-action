@@ -46,18 +46,39 @@ jobs:
           allowed: major,minor,patch
           default_match: none
 
-      - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ steps.label.outputs.match != 'none' }}
-        id: bump-semver
-        with:
-          current_version:  ${{ env.version }}
-          level: ${{steps.label.outputs.match}}
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   if: ${{ steps.label.outputs.match != 'none' }}
+      #   id: bump-semver
+      #   with:
+      #     current_version:  ${{ env.version }}
+      #     level: ${{steps.label.outputs.match}}
+
+      - name: "Get latest release tag"
+        run: |
+          IFS='.' read -r major minor patch <<< "${current_version}"
+          case ${{ steps.label.outputs.match }} in
+          major)
+          echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
+            ;;
+        
+          minor)
+          echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
+            ;;
+        
+          patch)
+          echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
+            ;;
+        
+          *)
+          echo "new_version=none" >> $GITHUB_ENV
+            ;;
+          esac
 
       - name: Get the created latest release time
-        run: echo "${{ steps.bump-semver.outputs.new_version }}"
+        run: echo "${{ env.new_version }}"
 
       - name: "Creating Release"
-        if: ${{ steps.label.outputs.match != 'none' }}
+        if: ${{ env.new_version != 'none' }}
         run: |
           gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
         env:
@@ -73,10 +94,10 @@ jobs:
       #   shell: bassh
       #   id: increment_version
       #   run: |
-      #       current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
-      #       IFS='.' read -r major minor patch <<< "${current_version#v}"
-      #       incremented_major=$((major + 1))
-      #       incremented_minor=$((minor + 1))
+            # current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
+            # IFS='.' read -r major minor patch <<< "${current_version#v}"
+            # echo "$((minor + 1)).${minor}.${patch}"
+            # incremented_minor=$((minor + 1))
       #       incremented_patch=$((patch + 1))
       #       echo "${incremented_major}.${incremented_minor}.${incremented_patch}"
       #       echo "${incremented_major}"
