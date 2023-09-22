@@ -55,7 +55,10 @@ jobs:
 
       - name: "Get latest release tag"
         run: |
-          IFS='.' read -r $major $minor $patch <<< "${{ env.version }}"
+          IFS='.' read -r major minor patch <<< "${{ env.version }}"
+          echo "major=${major}"
+          echo "minor=${minor}"
+          echo "patch=${patch}"
           case ${{ steps.label.outputs.match }} in
           major)
           echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
