@@ -126,7 +126,7 @@ jobs:
     #     run: |
     #       echo "Label: ${{ steps.semvers.outputs.patch }}"
 
-    #   - name: 'Create new milestone'
+    #   - name: 'Create new milestone21'
     #     id: createmilestone
     #     uses: "WyriHaximus/github-action-create-milestone@v1"
     #     with:
