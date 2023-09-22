@@ -37,38 +37,38 @@ jobs:
           allowed: major,minor,patch
           default_match: none
 
-      # - uses: actions-ecosystem/action-bump-semver@v1
-      #   if: ${{ steps.label.outputs.match != 'none' }}
-      #   id: bump-semver
-      #   with:
-      #     current_version:  ${{ env.version }}
-      #     level: ${{steps.label.outputs.match}}
+      - uses: actions-ecosystem/action-bump-semver@v1
+        if: ${{ steps.label.outputs.match != 'none' }}
+        id: bump-semver
+        with:
+          current_version:  ${{ env.version }}
+          level: ${{steps.label.outputs.match}}
 
-      - name: "Get latest release tag"
-        run: |
-          IFS='.' read -r major minor patch <<< "${{ env.version }}"
-          case ${{ steps.label.outputs.match }} in
-          major)
-          echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
-            ;;
-          minor)
-          echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
-            ;;
-          patch)
-          echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
-            ;;
-          *)
-          echo "new_version=none" >> $GITHUB_ENV
-            ;;
-          esac
+      # - name: "Get latest release tag"
+      #   run: |
+      #     IFS='.' read -r major minor patch <<< "${{ env.version }}"
+      #     case ${{ steps.label.outputs.match }} in
+      #     major)
+      #     echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
+      #       ;;
+      #     minor)
+      #     echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
+      #       ;;
+      #     patch)
+      #     echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
+      #       ;;
+      #     *)
+      #     echo "new_version=none" >> $GITHUB_ENV
+      #       ;;
+      #     esac
 
-      - name: Get the created latest release time
-        run: echo "${{ env.new_version }}"
+      # - name: Get the created latest release time
+      #   run: echo "${{ env.new_version }}"
 
       - name: "Creating Release"
         if: ${{ steps.label.outputs.match != 'none' }}
         run: |
-          gh release create  ${{ env.new_version }} --title " ${{ env.new_version }}" --generate-notes
+          gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: JasonEtco/build-and-tag-action@v2
@@ -76,7 +76,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag_name: ${{ env.new_version }}
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
       
         # - name: "increment"
       #   shell: bassh
