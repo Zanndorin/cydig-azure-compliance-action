@@ -17,7 +17,8 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
 
-      
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: "Get latest release"
         id: latest_release
         run: |
@@ -30,7 +31,7 @@ jobs:
           echo "version=${current_version}" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
-          
+
       - run: |
           echo ${{ steps.latest_release.outputs.version}}
       
