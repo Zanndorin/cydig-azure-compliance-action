@@ -20,7 +20,16 @@ jobs:
       - name: Get Latest Release
         uses: pozetroninc/github-action-get-latest-release@v0.7.0
         with:
-          repository: ${{ github.repository }}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+      
+      - name: Actions Ecosystem Action Get Latest Tag
+        uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+        id: vars
+        with: 
+          semver_only: true
+      - name: Get the created latest release time
+        run: echo "v${{ steps.vars.outputs.tag }}.
       
       - id: bump
         uses: zwaldowski/match-label-action@v4
