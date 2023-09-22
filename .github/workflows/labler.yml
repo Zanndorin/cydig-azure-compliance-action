@@ -18,14 +18,11 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
 
       
-      - name: Actions Ecosystem Action Get Latest Tag
-        uses: actions-ecosystem/action-get-latest-tag@v1.6.0
-        id: vars
+      - name: Get Latest Release
+        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+        id: latest_release
         with: 
-          semver_only: true
-          
-      - name: Get the created latest release time
-        run: echo "v${{ steps.vars.outputs.tag }}.
+          repository: Omegapoint/CydigAzureComplianceAction
       
       - id: label
         uses: zwaldowski/match-label-action@v4
@@ -37,7 +34,7 @@ jobs:
         if: ${{ steps.label.outputs.match != 'none' }}
         id: bump-semver
         with:
-          current_version: ${{ steps.vars.outputs.tag }}
+          current_version: ${{ steps.latest_release.outputs.release }}
           level: ${{steps.label.outputs.match}}
 
       - uses: zwaldowski/semver-release-action@v3
