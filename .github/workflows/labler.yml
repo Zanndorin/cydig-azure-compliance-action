@@ -18,11 +18,11 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
 
       
-      - name: Get Latest Release
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
+      - name: "Get latest release"
         id: latest_release
-        with: 
-          repository: Omegapoint/CydigAzureComplianceAction
+        run: |
+            current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
+            echo "version=${current_version}" >> $GITHUB_OUTPUT
       
       - id: label
         uses: zwaldowski/match-label-action@v4
@@ -34,7 +34,7 @@ jobs:
         if: ${{ steps.label.outputs.match != 'none' }}
         id: bump-semver
         with:
-          current_version: ${{ steps.latest_release.outputs.release }}
+          current_version: ${{ steps.latest_release.outputs.version}}
           level: ${{steps.label.outputs.match}}
 
       - uses: zwaldowski/semver-release-action@v3
