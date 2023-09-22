@@ -27,7 +27,7 @@ jobs:
           release_output=$(gh release list --limit 1)
           current_version=$(echo "$release_output" | grep Latest | awk '{ print $1;}')
           echo "current_version=${current_version}"
-          echo "version=${current_version}" >> $GITHUB_ENV
+          echo "version=${current_version=${current_version}}" >> $GITHUB_ENV
         env:
           GH_TOKEN: ${{ github.token }}
 
