@@ -51,7 +51,7 @@ jobs:
     
 
       - name: Get the created latest release time
-        run: echo "v${{ steps.label.outputs.match }}."
+        run: echo "v${{ steps.bump-semver.outputs.new_version }}."
 
       # - name: "increment"
       #   shell: bassh
