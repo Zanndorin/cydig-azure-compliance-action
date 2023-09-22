@@ -21,7 +21,8 @@ jobs:
       - name: "Get latest release"
         id: latest_release
         run: |
-            current_version=$(gh release list --limit 1 | grep Latest | awk '{ print $1;}')
+            current_version=$(gh release list --limit 1 | grep Latest | awk '{ print substr ($1, 2);}')
+            echo $current_version
             echo "version=${current_version}" >> $GITHUB_OUTPUT
       
       - id: label
