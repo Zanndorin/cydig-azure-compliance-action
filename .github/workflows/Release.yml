@@ -53,41 +53,34 @@ jobs:
       #     current_version:  ${{ env.version }}
       #     level: ${{steps.label.outputs.match}}
 
-      - name: Get Bumped Semantic Version
-        id: new_semver
-        uses: jessicalostinspace/bump-semantic-version-action@v1.0.1
-        with:
-          semantic-version: ${{ steps.latest_release.outputs.version }}
-          version-type: ${{ steps.label.outputs.match }}
-                
-      # - name: "Get latest release tag"
-      #   run: |
-      #     IFS='.' read -r $major $minor $patch <<< "${current_version}"
-      #     case ${{ steps.label.outputs.match }} in
-      #     major)
-      #     echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
-      #       ;;
+      - name: "Get latest release tag"
+        run: |
+          IFS='.' read -r $major $minor $patch <<< "${{ env.version }}"
+          case ${{ steps.label.outputs.match }} in
+          major)
+          echo "new_version=$((major + 1)).${minor}.${patch}" >> $GITHUB_ENV
+            ;;
         
-      #     minor)
-      #     echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
-      #       ;;
+          minor)
+          echo "new_version=${major}.$((minor + 1)).${patch}" >> $GITHUB_ENV
+            ;;
         
-      #     patch)
-      #     echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
-      #       ;;
+          patch)
+          echo "new_version=${major}.${minor}.$((patch + 1))" >> $GITHUB_ENV
+            ;;
         
-      #     *)
-      #     echo "new_version=none" >> $GITHUB_ENV
-      #       ;;
-      #     esac
+          *)
+          echo "new_version=none" >> $GITHUB_ENV
+            ;;
+          esac
 
       - name: Get the created latest release time
-        run: echo "${{ steps.new_semver.outputs.bumped-semantic-version }}"
+        run: echo "${{ env.new_version }}"
 
       - name: "Creating Release"
         if: ${{ steps.label.outputs.match != 'none' }}
         run: |
-          gh release create  ${{ steps.new_semver.outputs.bumped-semantic-version }} --title " ${{ steps.new_semver.outputs.bumped-semantic-version }}" --generate-notes
+          gh release create  ${{ env.new_version }} --title " ${{ env.new_version }}" --generate-notes
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: JasonEtco/build-and-tag-action@v2
@@ -95,7 +88,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
-          tag_name: ${{ steps.new_semver.outputs.bumped-semantic-version }}
+          tag_name: ${{ env.new_version }}
       
         # - name: "increment"
       #   shell: bassh
