@@ -31,6 +31,9 @@ jobs:
           allowed: major,minor,patch
           default_match: none
 
+      - run: |
+          echo ${{ steps.latest_release.outputs.version}}
+
       - uses: actions-ecosystem/action-bump-semver@v1
         if: ${{ steps.label.outputs.match != 'none' }}
         id: bump-semver
