@@ -20,7 +20,8 @@ jobs:
       - id: bump
         uses: zwaldowski/match-label-action@v4
         with:
-          allowed: major,minor,patch
+          allowed: major,minor,patch, none
+          default_match: none
       - uses: zwaldowski/semver-release-action@v3
         id: release
         with:
