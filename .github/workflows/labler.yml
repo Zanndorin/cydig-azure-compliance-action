@@ -16,12 +16,7 @@ jobs:
           echo "PR commit message: ${{ github.event.pull_request.head }}"
           echo "PR commit message: ${{ github.event.pull_request.head.sha }}"
           echo "PR commit message: ${{ github.event.pull_request.merge_commit_sha }}"
-      
-      - name: Get Latest Release
-        uses: pozetroninc/github-action-get-latest-release@v0.7.0
-        with:
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
+
       
       - name: Actions Ecosystem Action Get Latest Tag
         uses: actions-ecosystem/action-get-latest-tag@v1.6.0
