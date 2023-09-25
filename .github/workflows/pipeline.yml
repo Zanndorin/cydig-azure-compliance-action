@@ -15,8 +15,8 @@ jobs:
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci
-      - name: Compile to Javascript
-        run: npm run build
+      # - name: Compile to Javascript
+      #   run: npm run build
       # - name: Run tests
       #   run: npm run testScript
       # - name: Build Action
@@ -39,22 +39,22 @@ jobs:
       #     GITHUB_TOKEN: ${{ github.token }}
 
         
-      # - name: 'Az CLI login'
-      #   uses: azure/login@v1
-      #   with:
-      #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
-      #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-      #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: 'Az CLI login'
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           
-      # # - name: 'Run Azure Compliance Controls locally in repo'
-      # #   uses: ./
-      # #   with:
-      # #     subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-
-      # - name: 'Run Azure Compliance Controls'
-      #   uses: Omegapoint/CydigAzureComplianceAction@v1.0.11
+      # - name: 'Run Azure Compliance Controls locally in repo'
+      #   uses: ./
       #   with:
       #     subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: 'Run Azure Compliance Controls'
+        uses: Omegapoint/CydigAzureComplianceAction@v1
+        with:
+          subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 
           # # # - name: run command
