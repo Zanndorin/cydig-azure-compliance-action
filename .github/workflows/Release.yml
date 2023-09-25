@@ -6,80 +6,10 @@ on:
 
 jobs:
   release:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install dependencies and build
-        run: npm ci && npm run buildBundle
-      - name: "Get latest release tag"
-        id: latest_release
-        run: |
-          current_version=`gh release list --limit 30 | grep Latest | awk '{ print $1;}'`
-          if [ -z "$current_version" ]
-          then
-            echo "No release found"
-            echo "Creating tag for firt release"
-            echo "version=v1.0.0" >> $GITHUB_ENV
-          else
-            echo "version=${current_version}" >> $GITHUB_ENV
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Display version
-        run: |
-          # Display the version from the environment
-          echo "Latest Version: ${{ env.version }}"
-      
-      - id: label
-        uses: zwaldowski/match-label-action@v4
-        with:
-          allowed: major,minor,patch
-          default_match: none
-
-      - uses: actions-ecosystem/action-bump-semver@v1
-        if: ${{ steps.label.outputs.match != 'none' }}
-        id: bump-semver
-        with:
-          current_version:  ${{ env.version }}
-          level: ${{steps.label.outputs.match}}
-
-      - name: "Creating Release"
-        if: ${{ steps.label.outputs.match != 'none' }}
-        run: |
-          gh release create  ${{ steps.bump-semver.outputs.new_version }} --title " ${{ steps.bump-semver.outputs.new_version }}" --generate-notes
-        env:
-          GH_TOKEN: ${{ github.token }}
-      # - uses: "marvinpinto/action-automatic-releases@latest"
-      #   with:
-      #     repo_token: "${{ secrets.GITHUB_TOKEN }}"
-      #     automatic_release_tag: "${{ steps.bump-semver.outputs.new_version }}"
-      #     prerelease: false
-      #     title: "${{ steps.bump-semver.outputs.new_version }}"
-      #     files: |
-      #       action.yml
-      #       dist
-
-      # - name: Release
-      #   uses: softprops/action-gh-release@v1
-      #   if: ${{ steps.label.outputs.match != 'none' }}
-      #   with:
-      #     tag_name: ${{ steps.bump-semver.outputs.new_version }}
-      #     files: |
-      #       action.yml
-      #       ./dist
-        
-
-      - uses: JasonEtco/build-and-tag-action@v2
-        if: ${{ steps.label.outputs.match != 'none' }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{ steps.bump-semver.outputs.new_version }}
-      
-
+      - uses: omegapoint/cydig-reusable-workflows/.github/workflows/release.yml@main
+    
 
           
       # - name: "Get latest release tag"
@@ -102,10 +32,6 @@ jobs:
 
       # - name: Get the created latest release time
       #   run: echo "${{ env.new_version }}"
-
-
-
-
 
 
 
