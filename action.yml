@@ -5,7 +5,7 @@ inputs:
   subscription:
     description: Cydig azure tasks.
     required: true
-    default: Not working
+    default: Not workin
 runs:
   using: node16
   main: src/index.ts
