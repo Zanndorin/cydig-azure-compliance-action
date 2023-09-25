@@ -15,7 +15,9 @@
     "node",
     "setup"
   ],
-
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "engines": {
     "node": ">=16"
   },
