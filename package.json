@@ -21,7 +21,7 @@
   "engines": {
     "node": ">=16"
   },
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "build": "npx @vercel/ncc build && npx convert-action",
     "buildOne": "cd src && tsc",
