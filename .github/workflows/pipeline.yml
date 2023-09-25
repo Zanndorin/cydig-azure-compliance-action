@@ -38,9 +38,7 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Commit and push build to repo
-        run: |
-          
+        
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
