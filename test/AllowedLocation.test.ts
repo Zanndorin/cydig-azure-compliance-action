@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { isLocationAllowed } from '../allowedlocation/lib/AllowedLocations';
+import { isLocationAllowed } from '../src/allowedlocation/lib/AllowedLocations';
 
 chai.use(sinonChai);
 
