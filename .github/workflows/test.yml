@@ -1,5 +1,5 @@
-name: Test and Build
-run-name: ${{ github.actor }} is testing out github actions
+name: Run tests
+run-name: ${{ github.actor }} is running tests
 permissions:
   contents: write
   pages: write
@@ -19,6 +19,7 @@ jobs:
         run: npm run build
       - name: Run tests
         run: npm run test
+
       # - name: Build Action
       #   run: npm run build
       # - name: Check for code changes in dist folder
