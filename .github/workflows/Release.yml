@@ -11,6 +11,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install dependencies and build
+        run: npm ci && npm run build
+      
       - name: "Get latest release tag"
         id: latest_release
         run: |
