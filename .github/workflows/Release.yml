@@ -66,8 +66,9 @@ jobs:
         with:
           tag_name: ${{ steps.bump-semver.outputs.new_version }}
           files: |
-            Release.txt
-            LICENSE
+            action.yml
+            ./dist
+        
 
       - uses: JasonEtco/build-and-tag-action@v2
         if: ${{ steps.label.outputs.match != 'none' }}
