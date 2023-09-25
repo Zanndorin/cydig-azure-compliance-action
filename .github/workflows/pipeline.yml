@@ -15,10 +15,10 @@ jobs:
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci
-      # - name: Compile to Javascript
-      #   run: npm run build
-      # - name: Run tests
-      #   run: npm run testScript
+      - name: Compile to Javascript
+        run: npm run build
+      - name: Run tests
+        run: npm run testScript
       # - name: Build Action
       #   run: npm run build
       # - name: Check for code changes in dist folder

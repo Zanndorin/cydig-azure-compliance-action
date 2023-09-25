@@ -1,8 +1,8 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import { enabledPolicyFilter } from '../allowedlocation/lib/EnabledPolicyFilter';
-import { InfoPolicyType } from '../allowedlocation/lib/types/InfoPolicyType';
+import { enabledPolicyFilter } from '../src/allowedlocation/lib/EnabledPolicyFilter';
+import { InfoPolicyType } from '../src/allowedlocation/lib/types/InfoPolicyType';
 import * as testData from './TestData';
 
 chai.use(sinonChai);

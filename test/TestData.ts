@@ -1,4 +1,4 @@
-import { InfoPolicyType } from '../allowedlocation/lib/types/InfoPolicyType';
+import { InfoPolicyType } from '../src/allowedlocation/lib/types/InfoPolicyType';
 
 const name: string = 'testPolicy';
 const subscriptionId: string = 'testSubscriptionId';
