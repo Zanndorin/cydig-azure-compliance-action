@@ -32,7 +32,7 @@ export class AllowedLocation {
       console.log(`ALLOWED LOCATION POLICY IN PLACE: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
 
       core.exportVariable('allowedLocationPolicy', isSubscriptionLevelPolicyCheckPassed.toString());
-      console.log("core.exportVariable('allowedLocationPolicy')"+ core.getInput('allowedLocationPolicy'));
+      console.log("core.exportVariable('allowedLocationPolicy')" + core.getInput('allowedLocationPolicy'));
       return;
     }
   }

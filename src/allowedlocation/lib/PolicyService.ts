@@ -13,6 +13,7 @@ export class PolicyService {
     const allPolicyAssigments: PagedAsyncIterableIterator<PolicyAssignment, PolicyAssignment[], PageSettings> =
       await client.policyAssignments.list();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let policyAssigment: IteratorResult<PolicyAssignment, any> = await allPolicyAssigments.next();
 
     while (!policyAssigment.done) {
@@ -43,7 +44,6 @@ export class PolicyService {
 
     if (managementGroupAllowedLocationPolicyEnabled.length > 0) {
       const locationsInPolicy: string[] = this.getLocationsInPolicy(managementGroupAllowedLocationPolicyEnabled);
-
       if (locationsInPolicy.length > 0) {
         console.log('Checking if the policy only contains allowed locations');
 
@@ -53,9 +53,8 @@ export class PolicyService {
           return true;
         }
       }
-    } else {
-      return false;
     }
+    return false;
   }
 
   static async subscriptionLevelPolicyCheck(
@@ -73,60 +72,60 @@ export class PolicyService {
     const subscriptionAllowedLocationPolicyEnabled: InfoPolicyType[] = enabledPolicyFilter(
       subscriptionAllowedLocationPolicy
     );
-    if (subscriptionAllowedLocationPolicyEnabled.length > 0) {
-      const locationsInPolicy: string[] = this.getLocationsInPolicy(subscriptionAllowedLocationPolicyEnabled);
-
-      console.log('Checking if the policy only contains allowed locations');
-      if (isLocationAllowed(locationsInPolicy)) {
-        console.log('Getting number of complaint and non compliant resources');
-        const policyResult: SummarizeResults =
-          await policyInsightsClient.policyStates.summarizeForSubscriptionLevelPolicyAssignment(
-            subscriptionId,
-            subscriptionAllowedLocationPolicyEnabled[0].name
-          );
-
-        let numCompliantResources: number = 0;
-        let numNonCompliantResources: number = 0;
-
-        if (
-          policyResult.value[0].results.resourceDetails.length == 1 &&
-          policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant'
-          )
-        ) {
-          numCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant'
-          ).count;
-        } else if (
-          policyResult.value[0].results.resourceDetails.length == 1 &&
-          policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
-          ).count
-        ) {
-          numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
-          ).count;
-        } else if (policyResult.value[0].results.resourceDetails.length > 1) {
-          numCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'compliant'
-          ).count;
-          numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
-            (item: ComplianceDetail) => item.complianceState == 'noncompliant'
-          ).count;
-        }
-
-        console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources.toString()}`);
-        console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${numNonCompliantResources.toString()}`);
-
-        core.exportVariable('compliantResources', numCompliantResources.toString());
-        core.exportVariable('nonCompliantResources', numNonCompliantResources.toString());
-        return true;
-      } else {
-        return false;
-      }
-    } else {
+    if (!subscriptionAllowedLocationPolicyEnabled?.length && subscriptionAllowedLocationPolicyEnabled.length <= 0) {
       return false;
     }
+    const locationsInPolicy: string[] = this.getLocationsInPolicy(subscriptionAllowedLocationPolicyEnabled);
+
+    console.log('Checking if the policy only contains allowed locations');
+    if (!isLocationAllowed(locationsInPolicy)) {
+      return false;
+    }
+    console.log('Getting number of complaint and non compliant resources');
+    const policyResult: SummarizeResults =
+      await policyInsightsClient.policyStates.summarizeForSubscriptionLevelPolicyAssignment(
+        subscriptionId,
+        subscriptionAllowedLocationPolicyEnabled[0].name
+      );
+
+    let numCompliantResources: number | undefined = 0;
+    let numNonCompliantResources: number | undefined = 0;
+
+    if (policyResult.value?.[0] && policyResult.value[0].results?.resourceDetails) {
+      if (
+        policyResult.value[0].results.resourceDetails.length == 1 &&
+        policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'compliant'
+        )
+      ) {
+        numCompliantResources = policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'compliant'
+        )?.count;
+      } else if (
+        policyResult.value[0].results.resourceDetails.length == 1 &&
+        policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'noncompliant'
+        )?.count
+      ) {
+        numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'noncompliant'
+        )?.count;
+      } else if (policyResult.value[0].results.resourceDetails.length > 1) {
+        numCompliantResources = policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'compliant'
+        )?.count;
+        numNonCompliantResources = policyResult.value[0].results.resourceDetails.find(
+          (item: ComplianceDetail) => item.complianceState == 'noncompliant'
+        )?.count;
+      }
+    }
+
+    console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources?.toString()}`);
+    console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${numNonCompliantResources?.toString()}`);
+
+    core.exportVariable('compliantResources', numCompliantResources?.toString());
+    core.exportVariable('nonCompliantResources', numNonCompliantResources?.toString());
+    return true;
   }
 
   static getPolicyOnManagementGroupLevel(
@@ -135,13 +134,13 @@ export class PolicyService {
   ): InfoPolicyType[] {
     const policies: InfoPolicyType[] = [];
     for (let i: number = 0; i < policyAssigment.length; i++) {
-      if (policyAssigment[i].scope.startsWith('/providers/Microsoft.Management/managementGroups/')) {
+      if (policyAssigment[i].scope?.startsWith('/providers/Microsoft.Management/managementGroups/')) {
         const policy: InfoPolicyType = {
-          name: policyAssigment[i].name,
+          name: policyAssigment[i].name as string,
           subscriptionId: subscriptionId,
           managementGroup: policyAssigment[i].scope,
-          allowedLocations: policyAssigment[i].parameters.listOfAllowedLocations.value,
-          enforcementMode: policyAssigment[i].enforcementMode,
+          allowedLocations: policyAssigment[i].parameters?.listOfAllowedLocations.value,
+          enforcementMode: policyAssigment[i].enforcementMode as string,
         };
         policies.push(policy);
       }
@@ -154,11 +153,11 @@ export class PolicyService {
     for (let i: number = 0; i < policyAssigment.length; i++) {
       if (policyAssigment[i].scope == `/subscriptions/${subscriptionId}`) {
         const policy: InfoPolicyType = {
-          name: policyAssigment[i].name,
+          name: policyAssigment[i].name as string,
           subscriptionId: subscriptionId,
           managementGroup: policyAssigment[i].scope,
-          allowedLocations: policyAssigment[i].parameters.listOfAllowedLocations.value,
-          enforcementMode: policyAssigment[i].enforcementMode,
+          allowedLocations: policyAssigment[i].parameters?.listOfAllowedLocations.value,
+          enforcementMode: policyAssigment[i].enforcementMode as string,
         };
         policies.push(policy);
       }
@@ -181,7 +180,7 @@ export class PolicyService {
     const listOfResourcesInSub: PagedAsyncIterableIterator<PolicyState, PolicyState[], PageSettings> =
       policyInsightsClient.policyStates.listQueryResultsForManagementGroup(
         'latest',
-        managementGroupAllowedLocationPolicy[0].managementGroup?.split('/').pop(),
+        managementGroupAllowedLocationPolicy[0].managementGroup?.split('/').pop() as string,
         {
           queryOptions: {
             filter: `policyDefinitionName eq 'e56962a6-4747-49cd-b67b-bf8b01975c4c'`,
