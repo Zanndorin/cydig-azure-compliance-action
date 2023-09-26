@@ -23,4 +23,4 @@ export const policyNotEnabled: InfoPolicyType = {
   enforcementMode: enforcementModeOff,
 };
 
-export const PoliciyTypes: InfoPolicyType[] = [policyEnabled, policyNotEnabled];
+export const policyTypes: InfoPolicyType[] = [policyEnabled, policyNotEnabled];

@@ -33,8 +33,7 @@ export class AzureRoleService {
   }
   public async setRoleAssignmentForSubscription(): Promise<void> {
     // Convert the iterator to an array
-    // eslint-disable-next-line @typescript-eslint/typedef
-    const roleAssignmentsArray = [];
+    const roleAssignmentsArray: RoleDefinition[] = [];
     for await (const roleAssignment of this.authManagementClient.roleAssignments.listForScope(this.scope)) {
       roleAssignmentsArray.push(roleAssignment);
     }
@@ -45,28 +44,14 @@ export class AzureRoleService {
         (roleAssignment.principalType === 'User' || roleAssignment.principalType === 'Group') &&
         (roleAssignment.scope === this.scope ||
           roleAssignment.scope === '/' ||
-          roleAssignment.scope.startsWith('/providers/Microsoft.Management/managementGroups/'))
+          roleAssignment.scope?.startsWith('/providers/Microsoft.Management/managementGroups/'))
       );
     });
   }
 
-  // public async setRoleAssignmentForSubscription(): Promise<void> {
-  //   this.roleAssignments = this.authManagementClient.roleAssignments.listForScope(this.scope)
-  //     .filter((roleAssignment: RoleAssignment) => {
-  //       return (
-  //         (roleAssignment.principalType === 'User' ||
-  //           roleAssignment.principalType === 'Group') &&
-  //         (roleAssignment.scope === this.scope ||
-  //           roleAssignment.scope === '/' ||
-  //           roleAssignment.scope.startsWith(
-  //             '/providers/Microsoft.Management/managementGroups/'
-  //           ))
-  //       )
-  //     })
-  // }
   public async getHighPrivRoleAssignments(): Promise<RoleAssignment[]> {
     // Convert the iterator to an array
-    const roleDefinitionsArray = [];
+    const roleDefinitionsArray: RoleDefinition[] = [];
     for await (const roleDefinition of this.authManagementClient.roleDefinitions.list(this.scope)) {
       roleDefinitionsArray.push(roleDefinition);
     }
@@ -74,7 +59,7 @@ export class AzureRoleService {
     // Filter the role definitions
     this.roleDefinitionsHighPriv = roleDefinitionsArray.filter(
       (roleDefinition: RoleDefinition) =>
-        roleDefinition.roleName.includes('Owner') || roleDefinition.roleName.includes('Admin')
+        roleDefinition.roleName?.includes('Owner') || roleDefinition.roleName?.includes('Admin')
     );
 
     // Filter the role assignments based on filtered role definitions
@@ -85,33 +70,16 @@ export class AzureRoleService {
     return highPrivRoleAssignments;
   }
 
-  // public async getHighPrivRoleAssignments(): Promise<RoleAssignment[]> {
-  //   this.roleDefinitionsHighPriv = (
-  //     await this.authManagementClient.roleDefinitions.list(this.scope)
-  //   ).filter(
-  //     (roleDefinition: RoleDefinition) =>
-  //       roleDefinition.roleName.includes('Owner') ||
-  //       roleDefinition.roleName.includes('Admin')
-  //   )
-
-  //   const highPrivRoleAssignments: RoleAssignment[] =
-  //     this.roleAssignments.filter((roleAssignment: RoleAssignment) =>
-  //       this.filterArray(this.roleDefinitionsHighPriv, roleAssignment)
-  //     )
-
-  //   return highPrivRoleAssignments
-  // }
-
   public async getLowPrivRoleAssignments(): Promise<RoleAssignment[]> {
     // Convert the iterator to an array
-    const roleDefinitionsArray = [];
+    const roleDefinitionsArray: RoleDefinition[] = [];
     for await (const roleDefinition of this.authManagementClient.roleDefinitions.list(this.scope)) {
       roleDefinitionsArray.push(roleDefinition);
     }
 
     // Filter the role definitions
     this.roleDefinitionsLowPriv = roleDefinitionsArray.filter((roleDefinition: RoleDefinition) =>
-      roleDefinition.roleName.includes('Reader')
+      roleDefinition.roleName?.includes('Reader')
     );
 
     // Filter the role assignments based on filtered role definitions
@@ -121,21 +89,6 @@ export class AzureRoleService {
 
     return lowPrivRoleAssignments;
   }
-
-  // public async getLowPrivRoleAssignments(): Promise<RoleAssignment[]> {
-  //   this.roleDefinitionsLowPriv = (
-  //     await this.authManagementClient.roleDefinitions.list(this.scope)
-  //   ).filter((roleDefinition: RoleDefinition) =>
-  //     roleDefinition.roleName.includes('Reader')
-  //   )
-
-  //   const lowPrivRoleAssignments: RoleAssignment[] =
-  //     this.roleAssignments.filter((roleAssignment: RoleAssignment) =>
-  //       this.filterArray(this.roleDefinitionsLowPriv, roleAssignment)
-  //     )
-
-  //   return lowPrivRoleAssignments
-  // }
 
   public async getMediumPrivRoleAssignments(): Promise<RoleAssignment[]> {
     const mediumPrivRoleAssignments: RoleAssignment[] = this.roleAssignments.filter(
@@ -154,7 +107,7 @@ export class AzureRoleService {
     for (let i: number = 0; i < roleAssignments.length; i++) {
       if (roleAssignments[i].principalType === 'Group') {
         try {
-          const numberOfMembers: number = await this.getCountMembersOfGroup(roleAssignments[i].principalId);
+          const numberOfMembers: number = await this.getCountMembersOfGroup(roleAssignments[i].principalId as string);
           numberOfAssignments += numberOfMembers;
         } catch (err) {
           if (err.code === 'Authorization_RequestDenied') {
@@ -181,8 +134,8 @@ export class AzureRoleService {
   }
 
   public async getCountMembersOfGroup(groupId: string): Promise<number> {
-    // eslint-disable-next-line @typescript-eslint/typedef
-    const members = await this.client.api(`/groups/${groupId}/members`).get();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const members: any = await this.client.api(`/groups/${groupId}/members`).get();
     let numberOfMembers: number = 0;
     for (let i: number = 0; i < members.value.length; i++) {
       if (members.value[i]['@odata.type'] === '#microsoft.graph.group') {
@@ -196,12 +149,12 @@ export class AzureRoleService {
   }
 
   public async printRoles(roleAssignments: RoleAssignment[]): Promise<void> {
-    const roleDefinitionIds: string[] = [
+    const roleDefinitionIds: (string | undefined)[] = [
       ...new Set(roleAssignments.map((roleAssignment: RoleAssignment) => roleAssignment.roleDefinitionId)),
     ];
     console.log('Roles:');
     for (let i: number = 0; i < roleDefinitionIds.length; i++) {
-      console.log((await this.authManagementClient.roleDefinitions.getById(roleDefinitionIds[i])).roleName);
+      console.log((await this.authManagementClient.roleDefinitions.getById(roleDefinitionIds[i] as string)).roleName);
     }
   }
 }
