@@ -13,13 +13,13 @@ describe('Allowed Location Test', () => {
   });
 
   it('Should only returned enabled policies', () => {
-    const enabledPolicies: InfoPolicyType[] = enabledPolicyFilter(testData.PoliciyTypes);
-    expect(enabledPolicies.every((x) => x.enforcementMode == 'Enabled')).equal(true);
+    const enabledPolicies: InfoPolicyType[] = enabledPolicyFilter(testData.policyTypes);
+    expect(enabledPolicies.every((x: InfoPolicyType) => x.enforcementMode == 'Enabled')).equal(true);
   });
 
   it('Should not returned disabled policies', () =>
     expect(function () {
-      const enabledPolicies: InfoPolicyType[] = enabledPolicyFilter(testData.PoliciyTypes);
-      expect(enabledPolicies.some((x) => x.enforcementMode == 'DoNotEnforce')).equal(false);
+      const enabledPolicies: InfoPolicyType[] = enabledPolicyFilter(testData.policyTypes);
+      expect(enabledPolicies.some((x: InfoPolicyType) => x.enforcementMode == 'DoNotEnforce')).equal(false);
     }));
 });
