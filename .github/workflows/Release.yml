@@ -1,5 +1,5 @@
 name: Creating release
-
+run-name: ${{ github.actor }} creating a release
 on: 
   pull_request:
     types: [closed]
