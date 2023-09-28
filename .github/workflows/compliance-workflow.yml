@@ -6,17 +6,6 @@ on:
     - cron: "0 1 * * 1-5"
 
 jobs:
-    CyDig:
-      name: CyDig
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout self
-          uses: actions/checkout@v4
-        - name: Checkout compliance repository
-          uses: actions/checkout@v4
-          with:
-            repository: Omegapoint/cydig-reusable-workflows #compliance is the repository name where your compliance-template and cydigConfig.json is located. 
-            path: cydig-reusable-workflows #cydig-reusable-workflows is the repository name where your compliance-template and cydigConfig.json is located.
     CyDig-Compliance-Workflow:
       uses: Omegapoint/cydig-reusable-workflows/.github/workflows/compliance-template.yml@main
       secrets: inherit
