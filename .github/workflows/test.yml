@@ -30,21 +30,7 @@ jobs:
         uses: ./
         with:
           subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
-      # - name: Build Action
-      #   run: npm run build
-      # - name: Check for code changes in dist folder
-      #   run: | 
-      #     git fetch --quiet
-      #     if [[ -n $(git status --porcelain dist) ]]; then
-      #       echo "Code changes detected. Proceeding with commit and push."
-      #       git add dist
-      #       git config --global user.name ${{ github.actor }}
-      #       git commit -m "Automated Build"
-      #       git push
-      #     else
-      #       echo "No code changes detected for dist folder. Skipping commit and push."
-      #     fi
+
           
       # - name: 'Run Azure Compliance Controls'
       #   uses: Omegapoint/CydigAzureComplianceAction@v1
