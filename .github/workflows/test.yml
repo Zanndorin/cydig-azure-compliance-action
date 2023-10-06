@@ -30,4 +30,4 @@ jobs:
         uses: ./
         with:
           subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID_DEV }}
-          cydigConfigPath: src/cydigConfig.json
+          cydigConfigPath: ${{ github.workspace }}/src/cydigConfig.json
