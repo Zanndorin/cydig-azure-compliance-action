@@ -13,7 +13,7 @@ import { CyDigConfig } from './types/CyDigConfig';
  */
 export async function run(): Promise<void> {
   try {
-    const cydigConfig: CyDigConfig = getContentOfFile(core.getInput('cydig-config'));
+    const cydigConfig: CyDigConfig = getContentOfFile(core.getInput('cydigConfigPath'));
     if (cydigConfig.usingAzure) {
       const credentials: DefaultAzureCredential = new DefaultAzureCredential();
       const subscriptionId: string = core.getInput('subscription');
