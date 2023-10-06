@@ -6,6 +6,10 @@ inputs:
     description: Cydig azure tasks.
     required: true
     default: Not working
+  cydigConfigPath:
+    description: 'The path to the json-file containing configuration for CyDig'
+    required: true
+    default: 'Not working'
 runs:
   using: node16
   main: dist/index.js
