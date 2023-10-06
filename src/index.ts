@@ -4,6 +4,8 @@ import { SecureScore } from './securescore/SecureScore';
 import { DeployedVirtualMachines } from './deployedvirtualmachines/DeployedVirtualMachines';
 import { AllowedLocation } from './allowedlocation';
 import { UsersInProduction } from './usersinproduction';
+import { getContentOfFile } from './helpFunctions/JsonService';
+import { CyDigConfig } from './types/CyDigConfig';
 
 /**
  * The main function for the action.
@@ -11,16 +13,18 @@ import { UsersInProduction } from './usersinproduction';
  */
 export async function run(): Promise<void> {
   try {
-    const credentials: DefaultAzureCredential = new DefaultAzureCredential();
-    const subscriptionId: string = core.getInput('subscription');
-    await SecureScore.getSecureScore(credentials, subscriptionId);
-    await DeployedVirtualMachines.getDeployedVirtualMachines(credentials, subscriptionId);
-    await AllowedLocation.getAllowedLocation(credentials, subscriptionId);
-    await UsersInProduction.getUsersInProduction(credentials, subscriptionId);
+    const cydigConfig: CyDigConfig = getContentOfFile(core.getInput('cydigConfigPath'));
+    if (cydigConfig.usingAzure) {
+      const credentials: DefaultAzureCredential = new DefaultAzureCredential();
+      const subscriptionId: string = core.getInput('subscription');
+      await SecureScore.getSecureScore(credentials, subscriptionId);
+      await DeployedVirtualMachines.getDeployedVirtualMachines(credentials, subscriptionId);
+      await AllowedLocation.getAllowedLocation(credentials, subscriptionId);
+      await UsersInProduction.getUsersInProduction(credentials, subscriptionId);
+    }
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 run();

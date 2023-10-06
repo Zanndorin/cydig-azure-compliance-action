@@ -43,9 +43,9 @@ export class UsersInProduction {
     // Refactor the logs to be adjusted to github actions instead of azure devops tasks service connection
     if (azureRoleService.insufficientPermission && disablePermissionWarning && !JSON.parse(disablePermissionWarning)) {
       core.warning(
-        `The pipeline does not have access to view members in a group in your Azure Subscription, therefore the control will add 5 members for each group it finds. 
-        Follow these steps to give the pipeline the necessary permission: 
-        1. Go to the App Registration connected to your pipeline in the Azure portal.
+        `The workflow does not have access to view members in a group in your Azure Subscription, therefore the control will add 5 members for each group it finds. 
+        Follow these steps to give the workflow the necessary permission: 
+        1. Go to the App Registration connected to your workflow in the Azure portal.
         2. Go to API permission and press Add a permission.
         3. Press Microsoft Graph --> Application permission.
         4. Choose the permission GroupMember.Read.All and press Add permission.
@@ -53,9 +53,9 @@ export class UsersInProduction {
       );
     } else {
       console.log(
-        `The pipeline does not have access to view members in a group in your Azure Subscription, therefore the control will add 5 members for each group it finds. 
-        Follow these steps to give the pipeline the necessary permission: 
-        1. Go to the App Registration connected to your pipeline in the Azure portal.
+        `The workflow does not have access to view members in a group in your Azure Subscription, therefore the control will add 5 members for each group it finds. 
+        Follow these steps to give the workflow the necessary permission: 
+        1. Go to the App Registration connected to your workflow in the Azure portal.
         2. Go to API permission and press Add a permission.
         3. Press Microsoft Graph --> Application permission.
         4. Choose the permission GroupMember.Read.All and press Add permission.
