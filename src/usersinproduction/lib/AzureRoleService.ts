@@ -16,6 +16,9 @@ export class AzureRoleService {
     this.scope = `/subscriptions/${subscriptionId}`;
     this.authManagementClient = new AuthorizationManagementClient(credentials, subscriptionId);
     this.client = this.getClient(credentials);
+    this.roleAssignments = [];
+    this.roleDefinitionsHighPriv = [];
+    this.roleDefinitionsLowPriv = [];
   }
 
   private getClient(credentials: TokenCredential): Client {
