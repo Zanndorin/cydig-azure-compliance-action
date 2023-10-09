@@ -20,6 +20,7 @@ export async function run(): Promise<void> {
       await SecureScore.getSecureScore(credentials, subscriptionId);
       await DeployedVirtualMachines.getDeployedVirtualMachines(credentials, subscriptionId);
       await AllowedLocation.getAllowedLocation(credentials, subscriptionId);
+      console.log('Getting Users in Production');
       await UsersInProduction.getUsersInProduction(credentials, subscriptionId);
     }
   } catch (error) {
