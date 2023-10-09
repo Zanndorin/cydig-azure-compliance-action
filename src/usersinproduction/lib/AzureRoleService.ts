@@ -1,7 +1,6 @@
 import { AuthorizationManagementClient, RoleAssignment, RoleDefinition } from '@azure/arm-authorization';
 import { TokenCredential } from '@azure/identity';
 import { Client } from '@microsoft/microsoft-graph-client';
-import 'isomorphic-fetch';
 import { TokenCredentialAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials';
 
 export class AzureRoleService {
