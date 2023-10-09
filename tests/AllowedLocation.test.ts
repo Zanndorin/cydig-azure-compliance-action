@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
@@ -20,11 +21,11 @@ describe('Allowed Location Test', () => {
     }).to.throw('Locations must contain values'));
   it('Should throw error if location is undefined', () =>
     expect(function () {
-      isLocationAllowed(undefined);
+      isLocationAllowed(undefined as any);
     }).to.throw('Locations must contain values'));
 
   it('Should throw error if location is null', () =>
     expect(function () {
-      isLocationAllowed(null);
+      isLocationAllowed(null as any);
     }).to.throw('Locations must contain values'));
 });

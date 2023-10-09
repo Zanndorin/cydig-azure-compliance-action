@@ -5,7 +5,6 @@ import { RoleAssignment } from '@azure/arm-authorization';
 
 export class UsersInProduction {
   static async getUsersInProduction(credentials: TokenCredential, subscriptionId: string): Promise<void> {
-    // let disablePermissionWarning: string = tl.getVariable('disableWarningUsersInProd');
     let disablePermissionWarning: string = core.getInput('disableWarningUsersInProd');
     if (!disablePermissionWarning) {
       disablePermissionWarning = 'false';
