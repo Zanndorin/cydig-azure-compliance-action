@@ -12,7 +12,9 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "newLine": "lf"
+    "newLine": "lf",
+    "strict":true,
+    "useUnknownInCatchVariables": false
   },
   "exclude": ["./dist", "./node_modules", "./src"]
 }
