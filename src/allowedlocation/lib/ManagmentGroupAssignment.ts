@@ -67,8 +67,8 @@ export class ManagementGroupAssignment {
       }
     );
 
-    let numCompliantResources: number | undefined;
-    let numNonCompliantResources: number | undefined;
+    let numCompliantResources: number = 0;
+    let numNonCompliantResources: number = 0;
 
     result.value?.[0].policyAssignments?.forEach((policyAssignment: PolicyAssignmentSummary) => {
       if (
@@ -78,19 +78,19 @@ export class ManagementGroupAssignment {
       ) {
         policyAssignment.results?.resourceDetails?.forEach((state: ComplianceDetail) => {
           if (state.complianceState == 'compliant') {
-            numCompliantResources = state.count;
+            numCompliantResources = state.count || 0;
           }
           if (state.complianceState == 'noncompliant') {
-            numNonCompliantResources = state.count;
+            numNonCompliantResources = state.count || 0;
           }
         });
       }
     });
 
-    console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources?.toString()}`);
-    console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${numNonCompliantResources?.toString()}`);
-    core.exportVariable('compliantResources', numCompliantResources?.toString());
-    core.exportVariable('nonCompliantResources', numNonCompliantResources?.toString());
+    console.log(`NUMBER OF COMPLIANT RESOURCES: ${numCompliantResources.toString()}`);
+    core.exportVariable('compliantResources', numCompliantResources.toString());
+    console.log(`NUMBER OF NON-COMPLIANT RESOURCES: ${numNonCompliantResources.toString()}`);
+    core.exportVariable('nonCompliantResources', numNonCompliantResources.toString());
     return;
   }
 }
