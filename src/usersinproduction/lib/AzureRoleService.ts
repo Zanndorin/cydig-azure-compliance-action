@@ -107,6 +107,7 @@ export class AzureRoleService {
 
   public async getNumberOfAssignments(roleAssignments: RoleAssignment[]): Promise<number> {
     let numberOfAssignments: number = 0;
+    const roleAssignmentsIds: string[] = []; // Initialize an array to store unique principalId values
     for (let i: number = 0; i < roleAssignments.length; i++) {
       if (roleAssignments[i].principalType === 'Group') {
         try {
@@ -124,7 +125,10 @@ export class AzureRoleService {
           }
         }
       } else {
-        numberOfAssignments++;
+        if (roleAssignmentsIds.indexOf(roleAssignments[i].principalId as string) === -1) {
+          roleAssignmentsIds.push(roleAssignments[i].principalId as string);
+          numberOfAssignments++;
+        }
       }
     }
     return numberOfAssignments;
