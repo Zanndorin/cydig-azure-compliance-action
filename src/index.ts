@@ -17,13 +17,14 @@ export async function run(): Promise<void> {
     if (cydigConfig.usingAzure) {
       const credentials: DefaultAzureCredential = new DefaultAzureCredential();
       const subscriptionId: string = core.getInput('subscription');
+      if (!subscriptionId) throw new Error('Could not get subscriptionId');
       await SecureScore.getSecureScore(credentials, subscriptionId);
       await DeployedVirtualMachines.getDeployedVirtualMachines(credentials, subscriptionId);
       await AllowedLocation.getAllowedLocation(credentials, subscriptionId);
       await UsersInProduction.getUsersInProduction(credentials, subscriptionId);
     }
   } catch (error) {
-    if (error instanceof Error) core.setFailed(error.message);
+    core.setFailed(error.message);
   }
 }
 

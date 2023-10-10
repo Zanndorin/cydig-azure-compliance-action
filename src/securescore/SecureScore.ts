@@ -1,12 +1,11 @@
-import { SecurityCenter } from '@azure/arm-security';
+import { SecureScoreItem, SecurityCenter } from '@azure/arm-security';
 import { DefaultAzureCredential } from '@azure/identity';
 import * as core from '@actions/core';
 export class SecureScore {
   static async getSecureScore(credentials: DefaultAzureCredential, subscriptionId: string): Promise<void> {
     const client: SecurityCenter = new SecurityCenter(credentials, subscriptionId);
     console.log('Getting Azure Secure Score');
-    // eslint-disable-next-line @typescript-eslint/typedef
-    const secureScoreObject = await client.secureScores.get('ascScore');
+    const secureScoreObject: SecureScoreItem = await client.secureScores.get('ascScore');
     if (secureScoreObject?.['percentage']) {
       const secureScorePercent: number = Math.round(secureScoreObject?.['percentage'] * 100);
       console.log(`AZURE SECURE SCORE: ${secureScorePercent}%`);
