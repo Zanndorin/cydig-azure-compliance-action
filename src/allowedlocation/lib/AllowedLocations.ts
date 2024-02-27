@@ -3,6 +3,7 @@ const allowedLocations: string[] = [
   'northeurope',
   'westeurope',
   'swedencentral',
+  "sweden",
   'france',
   'francecentral',
   'francesouth',
@@ -19,5 +20,12 @@ export function isLocationAllowed(location: string[]): boolean {
   if (location === undefined || location === null || location.length === 0) {
     throw Error('Locations must contain values');
   }
-  return location.every((location: string) => allowedLocations.includes(location));
+  let policyValid: boolean = true
+  for (let index = 0; index < location.length; index++) {
+    if(!allowedLocations.includes(location[index])) {
+      console.log(`${location[index]} is not in the list of allowed locations. Contact the CyDig team if the location is in Europe`)
+      policyValid = false
+    }
+  }
+  return policyValid
 }

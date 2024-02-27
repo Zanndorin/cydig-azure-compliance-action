@@ -27,7 +27,7 @@ export class AllowedLocation {
       await policyService.getPolicyAssignmentsOfAllowedLocations();
 
     if (await managementGroupAssignment.policyCheck(allowedLocationPolicyAssignments)) {
-      console.log(`ALLOWED LOCATION POLICY IN PLACE: true`);
+      console.log(`ALLOWED LOCATION POLICY IN PLACE ON MANAGEMENT GROUP LEVEL: true`);
       core.exportVariable('allowedLocationPolicy', 'true');
       return;
     } else {
@@ -35,7 +35,7 @@ export class AllowedLocation {
         allowedLocationPolicyAssignments
       );
 
-      console.log(`ALLOWED LOCATION POLICY IN PLACE: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
+      console.log(`ALLOWED LOCATION POLICY IN PLACE WITH LOCATIONS ONLY IN EUROPE ON SUBSCRIPTION LEVEL: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
       core.exportVariable('allowedLocationPolicy', isSubscriptionLevelPolicyCheckPassed.toString());
       return;
     }

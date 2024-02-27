@@ -13,7 +13,12 @@ describe('Allowed Location Test', () => {
 
   it('Should return true if location is within allowed locations', () => {
     const isEnabled: boolean = isLocationAllowed(['europe']);
+    const isEnabled: boolean = isLocationAllowed(['europe', 'sweden']);
     expect(isEnabled).equal(true);
+  });
+  it('Should return false if location is within allowed locations', () => {
+    const isEnabled: boolean = isLocationAllowed(['europe', 'sweden', 'global']);
+    expect(isEnabled).equal(false);
   });
   it('Should throw error if location is empty', () =>
     expect(function () {
