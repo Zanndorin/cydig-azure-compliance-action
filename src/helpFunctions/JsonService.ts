@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import Joi from 'joi';
 
 import { CyDigConfig } from '../types/CyDigConfig';
 
