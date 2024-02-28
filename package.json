@@ -43,8 +43,7 @@
     "@azure/identity": "^3.3.0",
     "@microsoft/microsoft-graph-client": "^3.0.6",
     "@vercel/ncc": "^0.36.1",
-    "isomorphic-fetch": "^3.0.0",
-    "joi": "^17.11.0"
+    "isomorphic-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.6",
