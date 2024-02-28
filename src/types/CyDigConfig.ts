@@ -10,14 +10,20 @@ export type CyDigConfig = {
     boardsTag: string;
   };
   azureDevOps: {
-    usingBoards: boolean
+    usingBoards: boolean;
     boards: {
       organizationName: string;
       projectName: string;
       nameOfBoard: string;
-    }
+    };
+  };
+  scaTool: {
+    nameOfTool: string;
+  },
+  sastTool: {
+    nameOfTool: string;
+  },
+  codeQualityTool: {
+    nameOfTool: string;
   }
-  scaTool: string;
-  sastTool: string;
-  codeQualityTool: string;
 };
