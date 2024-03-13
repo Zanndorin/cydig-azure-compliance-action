@@ -10,16 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 
+      - name: Checkout
         uses: actions/checkout@v3
       - name: Setup node
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci
+      - name: Run lint
+        run: npm run lint
       - name: Run tests
         run: npm run test
+      - name: Delete dev dependencies
+        run: npm prune --production
       - name: Build Action
-        run: npm run build  
+        run: npm run build
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
@@ -31,4 +35,3 @@ jobs:
         with:
           subscription: ${{ secrets.AZURE_SUBSCRIPTION_ID_DEV }}
           cydigConfigPath: ${{ github.workspace }}/src/cydigConfig.json
- 
