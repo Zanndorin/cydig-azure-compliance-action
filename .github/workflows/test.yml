@@ -21,7 +21,7 @@ jobs:
       - name: Run tests
         run: npm run test
       - name: Delete dev dependencies
-        run: npm prune --production
+        run: npm prune --omit=dev
       - name: Build Action
         run: npm run build
       - name: 'Az CLI login'
