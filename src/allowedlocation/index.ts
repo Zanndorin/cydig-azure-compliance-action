@@ -35,7 +35,9 @@ export class AllowedLocation {
         allowedLocationPolicyAssignments
       );
 
-      console.log(`ALLOWED LOCATION POLICY IN PLACE WITH LOCATIONS ONLY IN EUROPE ON SUBSCRIPTION LEVEL: ${isSubscriptionLevelPolicyCheckPassed.toString()}`);
+      console.log(
+        `ALLOWED LOCATION POLICY IN PLACE WITH LOCATIONS ONLY IN EUROPE ON SUBSCRIPTION LEVEL: ${isSubscriptionLevelPolicyCheckPassed.toString()}`
+      );
       core.exportVariable('allowedLocationPolicy', isSubscriptionLevelPolicyCheckPassed.toString());
       return;
     }
