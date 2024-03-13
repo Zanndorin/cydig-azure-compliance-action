@@ -14,4 +14,3 @@ export function getContentOfFile(jsonPath: string): CyDigConfig {
 
   return cydigConfig;
 }
-
