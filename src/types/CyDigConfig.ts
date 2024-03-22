@@ -1,6 +1,7 @@
 export type CyDigConfig = {
   teamName: string;
   usingAzure: boolean;
+  usingAWS: boolean;
   threatModeling: {
     date: string;
     boardsTag: string;
